@@ -1,0 +1,295 @@
+/* ═══════════════════════════════════════════════════════════
+   Orbit.css
+   Animated technology orbit with rotating nodes & center badge
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --orbit-size: 680px;
+  --orbit-radius: 255px;
+}
+
+@media (max-width: 991px) {
+  :root {
+    --orbit-size: 560px;
+    --orbit-radius: 210px;
+  }
+}
+
+@media (max-width: 576px) {
+  :root {
+    --orbit-size: min(440px, calc(100vw - 32px));
+    --orbit-radius: calc(var(--orbit-size) * 0.375);
+  }
+}
+
+@media (max-width: 380px) {
+  :root {
+    --orbit-size: min(300px, calc(100vw - 20px));
+    --orbit-radius: calc(var(--orbit-size) * 0.36);
+  }
+}
+
+.orbit-container {
+  position: relative;
+  width: var(--orbit-size);
+  height: var(--orbit-size);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+/* ── Background rings ── */
+.orbit-bg-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.orbit-bg-ring--outer {
+  width: calc(var(--orbit-radius) * 2);
+  height: calc(var(--orbit-radius) * 2);
+  border: 1px dashed color-mix(in srgb, var(--accent) 40%, transparent);
+  box-shadow: 0 0 40px color-mix(in srgb, var(--accent) 6%, transparent);
+  animation: orbitRingSpinReverse 70s linear infinite;
+}
+
+/* Glowing comet dot riding the outer ring */
+.orbit-bg-ring--outer::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow:
+    0 0 14px var(--accent),
+    0 0 30px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+.orbit-bg-ring--inner {
+  width: calc(var(--orbit-radius) * 1.25);
+  height: calc(var(--orbit-radius) * 1.25);
+  border: 1px solid var(--border-light);
+  opacity: 0.7;
+  animation: orbitRingSpin 55s linear infinite;
+}
+
+/* Small dot on the inner ring */
+.orbit-bg-ring--inner::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  border-radius: 50%;
+  background: var(--accent, var(--accent));
+  box-shadow: 0 0 10px var(--accent, var(--accent));
+}
+
+@keyframes orbitRingSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes orbitRingSpinReverse {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
+/* ── Rotating ring carrying the nodes ── */
+.orbit-ring {
+  position: absolute;
+  width: 0;
+  height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+.orbit-node-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: 0 0;
+}
+
+/* Centers the pill exactly on its point of the ring (any pill width) */
+.orbit-node-center {
+  transform: translate(-50%, -50%);
+}
+
+.orbit-node {
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* ── Center core ── */
+.orbit-center {
+  position: relative;
+  z-index: 5;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: var(--black);
+  border: 2px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  box-shadow:
+    0 10px 30px color-mix(in srgb, var(--black) 20%, transparent),
+    0 0 20px color-mix(in srgb, var(--accent) 25%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Spinning gradient ring around the core */
+.orbit-center-spin {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    var(--accent) 25%,
+    transparent 50%,
+    var(--accent, var(--accent)) 75%,
+    transparent 100%
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  animation: orbitRingSpin 6s linear infinite;
+  pointer-events: none;
+}
+
+/* Ripple waves spreading outward */
+.orbit-ripple {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  animation: orbitRipple 4.5s ease-out infinite;
+}
+
+.orbit-ripple--2 { animation-delay: 1.5s; }
+.orbit-ripple--3 { animation-delay: 3s; }
+
+@keyframes orbitRipple {
+  0%   { transform: scale(1);   opacity: 0.55; }
+  100% { transform: scale(2.3); opacity: 0;    }
+}
+
+.orbit-center-glow {
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 24%, transparent) 0%, color-mix(in srgb, var(--accent) 0%, transparent) 70%);
+  pointer-events: none;
+  animation: orbitGlowBreath 4s ease-in-out infinite;
+}
+
+@keyframes orbitGlowBreath {
+  0%, 100% { transform: scale(1);    opacity: 0.8; }
+  50%      { transform: scale(1.14); opacity: 1;   }
+}
+
+.orbit-center-text {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--warm-white);
+}
+
+.orbit-center-sub {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+/* Shimmer sweep across the main text */
+.orbit-center-main {
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  background: linear-gradient(
+    100deg,
+    var(--warm-white) 35%,
+    var(--accent, var(--accent)) 50%,
+    var(--warm-white) 65%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: orbitTextShimmer 4s ease-in-out infinite;
+}
+
+@keyframes orbitTextShimmer {
+  0%   { background-position: 120% 0; }
+  100% { background-position: -120% 0; }
+}
+
+/* ── Pause CSS animations when off-screen ── */
+.orbit-container.is-paused .orbit-bg-ring,
+.orbit-container.is-paused .orbit-center-spin,
+.orbit-container.is-paused .orbit-ripple,
+.orbit-container.is-paused .orbit-center-glow,
+.orbit-container.is-paused .orbit-center-main {
+  animation-play-state: paused;
+}
+
+/* ── Responsive ── */
+@media (max-width: 576px) {
+  .technology-orbit-wrapper {
+    min-height: 320px;
+    overflow: hidden;
+  }
+
+  .orbit-container {
+    transform: scale(0.68);
+    transform-origin: center center;
+    margin: -70px auto;
+  }
+
+  .orbit-center {
+    width: 120px;
+    height: 120px;
+  }
+
+  .orbit-center-sub {
+    font-size: 0.6rem;
+  }
+
+  .orbit-center-main {
+    font-size: 0.74rem;
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .orbit-bg-ring,
+  .orbit-center-spin,
+  .orbit-ripple,
+  .orbit-center-glow,
+  .orbit-center-main {
+    animation: none;
+  }
+
+  .orbit-ripple {
+    display: none;
+  }
+}

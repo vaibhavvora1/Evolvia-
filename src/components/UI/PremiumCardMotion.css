@@ -1,0 +1,202 @@
+@property --premium-border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.premium-card-motion {
+  --mx: 50%;
+  --my: 50%;
+  --premium-border-angle: 0deg;
+  position: relative;
+  isolation: isolate;
+  height: 100%;
+}
+
+.premium-card-motion > * {
+  height: 100%;
+}
+
+.premium-card-motion > .premium-card-glow,
+.premium-card-motion > .premium-card-spotlight,
+.premium-card-motion > .premium-card-shine,
+.premium-card-motion > .premium-card-ring,
+.premium-card-motion > .premium-card-bar,
+.premium-card-motion > .premium-card-progress {
+  position: absolute;
+  z-index: 2;
+  height: auto;
+  pointer-events: none;
+}
+
+.premium-card-motion > .premium-card-progress {
+  inset: 0 0 auto;
+  z-index: 4;
+  height: 2px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--g1), var(--g2));
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.premium-card-motion > .premium-card-glow {
+  top: -4rem;
+  right: -3rem;
+  width: 13rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--g1), transparent 68%);
+  filter: blur(22px);
+  opacity: 0.12;
+}
+
+.premium-card-motion > .premium-card-spotlight {
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    340px circle at var(--mx) var(--my),
+    color-mix(in srgb, var(--g1) 17%, transparent),
+    transparent 68%
+  );
+  opacity: 0;
+  transition: opacity 260ms ease;
+}
+
+.premium-card-motion > .premium-card-shine {
+  inset: -70% -35%;
+  border-radius: inherit;
+  background: linear-gradient(
+    110deg,
+    transparent 43%,
+    color-mix(in srgb, var(--warm-white) 20%, transparent) 50%,
+    transparent 57%
+  );
+  opacity: 0;
+  transform: translateX(-55%) rotate(8deg);
+  transition:
+    transform 760ms var(--ease-out),
+    opacity 220ms ease;
+}
+
+.premium-card-motion > .premium-card-ring {
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--premium-border-angle),
+    transparent 0deg,
+    var(--g1) 90deg,
+    var(--g2) 180deg,
+    transparent 270deg
+  );
+  opacity: 0;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+.premium-card-motion > .premium-card-bar {
+  inset: auto 0 0;
+  height: 3px;
+  border-radius: 0 0 var(--radius-card) var(--radius-card);
+  background: linear-gradient(90deg, var(--g1), var(--g2));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 420ms var(--ease-out);
+}
+
+.premium-card-motion:hover > .premium-card-spotlight,
+.premium-card-motion:focus-within > .premium-card-spotlight {
+  opacity: 1;
+}
+
+.premium-card-motion:hover > .premium-card-shine,
+.premium-card-motion:focus-within > .premium-card-shine {
+  opacity: 1;
+  transform: translateX(55%) rotate(8deg);
+}
+
+.premium-card-motion:hover > .premium-card-ring,
+.premium-card-motion:focus-within > .premium-card-ring {
+  opacity: 1;
+}
+
+.premium-card-motion:hover > .premium-card-bar,
+.premium-card-motion:focus-within > .premium-card-bar {
+  transform: scaleX(1);
+}
+
+.premium-card-motion:hover > .premium-card-glow,
+.premium-card-motion:focus-within > .premium-card-glow {
+  animation: premium-glow-drift 7s ease-in-out infinite alternate;
+}
+
+@keyframes premium-glow-drift {
+  from {
+    transform: translate3d(-8px, 5px, 0) scale(0.94);
+  }
+  to {
+    transform: translate3d(8px, -7px, 0) scale(1.08);
+  }
+}
+
+.premium-card-motion:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: var(--radius-card);
+}
+
+.premium-card-motion :is(img, .project-visual-image, .job-card-image) {
+  translate: 0 var(--card-image-y, 0px);
+}
+
+.premium-card-motion
+  :is(
+    .industry-icon,
+    .service-icon,
+    .ai-service-card__icon,
+    .process-icon-badge
+  ) {
+  translate: 0 var(--card-icon-y, 0px);
+}
+
+.premium-card-motion .motion-card--featured::after {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .premium-card-motion:hover {
+    z-index: 2;
+  }
+}
+
+@media (hover: none) {
+  .premium-card-motion > .premium-card-spotlight,
+  .premium-card-motion > .premium-card-ring {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .premium-card-motion,
+  .premium-card-motion > .premium-card-glow,
+  .premium-card-motion > .premium-card-spotlight,
+  .premium-card-motion > .premium-card-shine,
+  .premium-card-motion > .premium-card-ring,
+  .premium-card-motion > .premium-card-bar,
+  .premium-card-motion > .premium-card-progress {
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .premium-card-motion > .premium-card-spotlight,
+  .premium-card-motion > .premium-card-ring {
+    display: none;
+  }
+}

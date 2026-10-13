@@ -1,0 +1,51 @@
+.scroll-section-blobs {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.careers-section,
+.industries-section,
+.blog-section,
+.team-section,
+.services-section,
+.ai-services-section,
+.process-section,
+.works-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-section-blobs ~ .container {
+  position: relative;
+  z-index: 1;
+}
+
+.scroll-section-blob {
+  position: absolute;
+  width: clamp(15rem, 32vw, 28rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(78px);
+  opacity: 0.14;
+}
+
+.scroll-section-blob--1 {
+  top: 8%;
+  left: -9rem;
+  background: radial-gradient(circle, var(--accent), transparent 70%);
+}
+
+.scroll-section-blob--2 {
+  right: -10rem;
+  bottom: 4%;
+  background: radial-gradient(circle, var(--accent-deep), transparent 70%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-section-blob {
+    display: none;
+  }
+}

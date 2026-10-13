@@ -1,0 +1,231 @@
+@property --beam-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* ── Base card shell ──────────────────────────────────────── */
+.motion-card {
+  --spotlight-x: 50%;
+  --spotlight-y: 50%;
+  position: relative;
+  isolation: isolate;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-card, 16px);
+  background: var(--warm-white);
+  transition:
+    border-color 0.25s var(--ease-out),
+    box-shadow   0.25s var(--ease-out),
+    transform    0.25s var(--ease-out);
+  will-change: transform;
+}
+
+/* Teal spotlight radial that follows cursor */
+.motion-card::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    280px circle at var(--spotlight-x) var(--spotlight-y),
+    var(--accent-glow-soft),
+    transparent 72%
+  );
+  content: '';
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease-out);
+}
+
+.motion-card:hover,
+.motion-card:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 12px 40px var(--accent-glow-soft);
+}
+
+.motion-card:hover::before,
+.motion-card:focus-within::before {
+  opacity: 1;
+}
+
+/* ── Featured: rotating teal border beam ─────────────────── */
+.motion-card--featured::after {
+  position: absolute;
+  z-index: 2;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--beam-angle, 0deg),
+    transparent 0 72%,
+    color-mix(in srgb, var(--accent) 82%, transparent) 81%,
+    transparent 91% 100%
+  );
+  content: '';
+  animation: card-beam 6s linear infinite;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.motion-card--featured {
+  border-color: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+/* ── Icon hover: rotate + scale ─────────────────────────── */
+.motion-card [data-card-icon] {
+  transition: transform 0.25s var(--ease-out), color 0.25s ease;
+  color: var(--accent);
+}
+
+.motion-card:hover [data-card-icon],
+.motion-card:focus-within [data-card-icon] {
+  transform: rotate(8deg) scale(1.1);
+}
+
+/* ── Tags slide up on hover ──────────────────────────────── */
+.motion-card .card-tags {
+  transition: transform 0.25s var(--ease-out);
+}
+
+.motion-card:hover .card-tags,
+.motion-card:focus-within .card-tags {
+  transform: translateY(-2px);
+}
+
+/* ── Dark-section override ────────────────────────────────── */
+.dark-section .motion-card {
+  background: color-mix(in srgb, var(--warm-white) 4%, transparent);
+  border-color: var(--border-dark);
+}
+
+.dark-section .motion-card:hover,
+.dark-section .motion-card:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 12px 40px var(--accent-glow);
+  background: color-mix(in srgb, var(--accent) 5%, var(--black-soft));
+}
+
+/* ── Project card 3-D tilt ───────────────────────────────── */
+.motion-card--project {
+  perspective: 900px;
+  transform-style: preserve-3d;
+}
+
+.motion-card--project .project-visual-wrapper {
+  transform: rotateX(var(--card-tilt-x)) rotateY(var(--card-tilt-y));
+  transition: transform 260ms ease;
+  transform-style: preserve-3d;
+}
+
+.motion-card--project:hover .project-visual-wrapper {
+  transform: rotateX(var(--card-tilt-x)) rotateY(var(--card-tilt-y)) scale(1.05);
+}
+
+.motion-card--project .project-art-icon {
+  transition: transform 260ms ease;
+}
+
+.motion-card--project:hover .project-art-icon {
+  transform: scale(1.05);
+}
+
+.motion-card--project .project-link-arrow {
+  transition: transform 220ms ease, color 220ms ease;
+}
+
+.motion-card--project:hover .project-link-arrow {
+  transform: translate(4px, -4px);
+  color: var(--accent);
+}
+
+/* ── Blog card ───────────────────────────────────────────── */
+.motion-card--blog .blog-card-media {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.motion-card--blog.in-view .blog-card-media {
+  clip-path: inset(0);
+}
+
+.motion-card--blog:hover .blog-card-image {
+  transform: scale(1.05);
+}
+
+.motion-card--blog:hover .blog-arrow {
+  transform: translateX(5px);
+}
+
+/* ── Job card ring effect ─────────────────────────────────── */
+.motion-card--job .job-apply-button {
+  display: inline-flex;
+  position: relative;
+  border-radius: 9999px;
+}
+
+.motion-card--job .job-apply-button::after {
+  position: absolute;
+  inset: -5px;
+  border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+  border-radius: inherit;
+  content: '';
+  opacity: 0;
+  pointer-events: none;
+}
+
+.motion-card--job .job-apply-button:hover::after,
+.motion-card--job .job-apply-button:focus-visible::after {
+  animation: apply-ring 0.72s ease-out infinite;
+}
+
+/* ── Team card ───────────────────────────────────────────── */
+.motion-card--team .team-socials {
+  display: flex;
+  gap: 10px;
+}
+
+.motion-card--team .social-icon-btn {
+  transform: scale(0.88);
+  transition: transform 220ms var(--ease-out), color 220ms ease, background-color 220ms ease;
+}
+
+.motion-card--team .social-icon-btn:hover,
+.motion-card--team .social-icon-btn:focus-visible {
+  transform: scale(1.12);
+}
+
+/* ── Keyframes ───────────────────────────────────────────── */
+@keyframes card-beam {
+  to { --beam-angle: 360deg; }
+}
+
+@keyframes apply-ring {
+  0%   { transform: scale(0.95); opacity: 0.65; }
+  100% { transform: scale(1.22); opacity: 0; }
+}
+
+/* ── Reduced motion ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .motion-card,
+  .motion-card::before,
+  .motion-card [data-card-icon],
+  .motion-card .card-tags,
+  .motion-card--project .project-visual-wrapper,
+  .motion-card--project .project-art-icon,
+  .motion-card--project .project-link-arrow,
+  .motion-card--blog .blog-card-media,
+  .motion-card--team .social-icon-btn {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .motion-card--featured::after,
+  .motion-card--job .job-apply-button::after {
+    animation: none !important;
+  }
+
+  .motion-card--project .project-visual-wrapper {
+    transform: none !important;
+  }
+}

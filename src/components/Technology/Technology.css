@@ -1,0 +1,153 @@
+/* ═══════════════════════════════════════════════════════════
+   Technology.css
+   Modern technology stack, orbit showcase & pillar cards
+   ═══════════════════════════════════════════════════════════ */
+
+.technology-section {
+  position: relative;
+  padding: 120px 0 90px 0;
+  background-color: var(--warm-white-2);
+  border-bottom: 1px solid var(--border-light);
+  overflow: hidden;
+}
+
+.technology-section > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Floating background blobs */
+.technology-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+  z-index: 0;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+.technology-blob--1 {
+  width: 340px;
+  height: 340px;
+  top: -80px;
+  left: -90px;
+  animation: blobDrift1 18s ease-in-out infinite;
+}
+
+.technology-blob--2 {
+  width: 400px;
+  height: 400px;
+  bottom: -120px;
+  right: -100px;
+  animation: blobDrift2 22s ease-in-out infinite;
+}
+
+@keyframes blobDrift1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(60px, 40px) scale(1.15); }
+}
+
+@keyframes blobDrift2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-70px, -50px) scale(1.2); }
+}
+
+.max-w-720 {
+  max-width: 720px;
+}
+
+.technology-orbit-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+}
+
+/* Pillar Card */
+.tech-pillar-card {
+  position: relative;
+  height: 100%;
+  padding: 36px 30px;
+  overflow: hidden;
+  background-color: var(--warm-white);
+  border: 1px solid var(--border-light);
+  border-radius: 18px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* Gradient line that grows across the top on hover */
+.tech-pillar-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent, var(--accent)));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tech-pillar-card:hover::before {
+  transform: scaleX(1);
+}
+
+.tech-pillar-card:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  box-shadow: 0 16px 36px color-mix(in srgb, var(--black) 7%, transparent);
+}
+
+.pillar-num {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: 14px;
+  transition: text-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.tech-pillar-card:hover .pillar-num {
+  text-shadow: 0 0 14px color-mix(in srgb, var(--accent) 55%, transparent);
+  transform: translateX(4px);
+}
+
+.pillar-title {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 10px;
+}
+
+.pillar-desc {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .technology-section {
+    padding: 80px 0 60px 0;
+  }
+
+  .technology-blob {
+    opacity: 0.6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .technology-blob {
+    animation: none;
+  }
+
+  .tech-pillar-card,
+  .tech-pillar-card::before,
+  .pillar-num {
+    transition: none;
+  }
+}

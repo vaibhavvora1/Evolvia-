@@ -1,0 +1,11 @@
+.cookie-policy-page .cookie-table-wrap {
+  max-width: 100%;
+}
+
+.cookie-policy-page code {
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: var(--warm-white-2);
+  color: var(--black);
+  overflow-wrap: anywhere;
+}
