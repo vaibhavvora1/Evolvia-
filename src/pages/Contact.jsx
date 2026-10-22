@@ -279,10 +279,10 @@ export default function Contact() {
                   padding: '32px',
                 }}
               >
-                <h3 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>Direct Coordinates</h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', fontSize: '0.95rem' }}>
+                <h3 style={{ fontSize: '1.35rem', marginBottom: '18px' }}>Direct Coordinates</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', fontSize: '1rem' }}>
                   <div>
-                    <span style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                    <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '4px' }}>
                       Inquiries &amp; RFPs
                     </span>
                     <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: 'var(--black)', fontWeight: 700 }}>
@@ -290,13 +290,13 @@ export default function Contact() {
                     </a>
                   </div>
                   <div>
-                    <span style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                    <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '4px' }}>
                       Studio Location
                     </span>
                     <span style={{ color: 'var(--black)', fontWeight: 600 }}>{ADDRESS}</span>
                   </div>
                   <div>
-                    <span style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                    <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '4px' }}>
                       Response Window
                     </span>
                     <span style={{ color: 'var(--text-muted)' }}>Within 24 business hours</span>
@@ -311,12 +311,13 @@ export default function Contact() {
                     border: '1px solid var(--border)',
                     borderRadius: 'var(--radius-md)',
                     padding: '32px',
+                    marginTop: '24px',
                   }}
                 >
-                  <h3 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>What to Expect</h3>
+                  <h3 style={{ fontSize: '1.35rem', marginBottom: '18px' }}>What to Expect</h3>
                   <ul className="detail-checklist">
                     {contactPerks.map((perk) => (
-                      <li key={perk} className="detail-checklist-item" style={{ fontSize: '0.925rem' }}>
+                      <li key={perk} className="detail-checklist-item" style={{ fontSize: '1.025rem' }}>
                         {perk}
                       </li>
                     ))}

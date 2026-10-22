@@ -104,12 +104,12 @@ export default function About() {
                   backgroundColor: 'var(--card)',
                   border: '1px solid var(--border)',
                   borderRadius: 'var(--radius-md)',
-                  padding: '28px',
+                  padding: 'clamp(26px, 3.5vw, 34px)',
                 }}
               >
                 <span className="section-tag">{principle.tag}</span>
                 <h3 style={{ marginTop: '16px', marginBottom: '12px' }}>{principle.title}</h3>
-                <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.95rem' }}>
+                <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '1.025rem', lineHeight: '1.7' }}>
                   {principle.description}
                 </p>
               </div>

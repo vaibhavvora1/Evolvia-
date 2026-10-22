@@ -78,13 +78,13 @@ export default function Careers() {
                     backgroundColor: 'var(--card)',
                     border: '1px solid var(--border)',
                     borderRadius: 'var(--radius-md)',
-                    padding: '24px',
+                    padding: 'clamp(26px, 3vw, 32px)',
                   }}
                 >
-                  <h3 style={{ fontSize: '1.2rem', marginBottom: '12px' }}>{benefit.title}</h3>
+                  <h3 style={{ fontSize: '1.35rem', marginBottom: '14px' }}>{benefit.title}</h3>
                   <ul className="detail-checklist">
                     {benefit.points?.map((pt) => (
-                      <li key={pt} className="detail-checklist-item" style={{ fontSize: '0.9rem' }}>
+                      <li key={pt} className="detail-checklist-item" style={{ fontSize: '1.025rem' }}>
                         {pt}
                       </li>
                     ))}

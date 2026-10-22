@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { services, aiServices } from '../data/services';
+import Img from '../components/UI/Img';
 import PageHeader from '../components/UI/PageHeader';
 import DarkBand from '../components/UI/DarkBand';
 import Card from '../components/UI/Card';
@@ -28,10 +29,19 @@ export default function ServiceDetail() {
     return <NotFound />;
   }
 
-  // 3 related services
-  const relatedServices = allServicesList
-    .filter((s) => s.id !== service.id)
-    .slice(0, 3);
+  // 3 related services — prefer relatedIds from data, fallback to first 3
+  const relatedServices = service.relatedIds
+    ? service.relatedIds
+        .map((id) => allServicesList.find((s) => s.id === id))
+        .filter(Boolean)
+        .slice(0, 3)
+    : allServicesList.filter((s) => s.id !== service.id).slice(0, 3);
+
+  // Normalise field names across data shape variations
+  // Data stores workflow as `service.workflow` with {step, title, desc} objects
+  // Data stores FAQs as `service.faq` with {q, a} objects
+  const workflowSteps = service.workflow || service.process || [];
+  const faqItems = service.faq || service.faqs || [];
 
   return (
     <div className="detail-page service-detail-page">
@@ -71,15 +81,15 @@ export default function ServiceDetail() {
               </div>
             </div>
 
-            {/* Featured Image if present */}
+            {/* Featured Image */}
             {service.image && (
               <div className="detail-block">
                 <Img
                   src={service.image}
                   alt={service.title}
                   ratio="banner"
-                  width="860"
-                  height="420"
+                  width={860}
+                  height={420}
                 />
               </div>
             )}
@@ -91,7 +101,6 @@ export default function ServiceDetail() {
                 <ul className="detail-checklist">
                   {service.included.map((item) => (
                     <li key={item} className="detail-checklist-item">
-                      <span className="checklist-bullet" aria-hidden="true">&bull;</span>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -99,17 +108,21 @@ export default function ServiceDetail() {
               </div>
             )}
 
-            {/* Our Process / Delivery Stages */}
-            {service.process && service.process.length > 0 && (
+            {/* Engineering Methodology / Workflow Steps */}
+            {workflowSteps.length > 0 && (
               <div className="detail-block">
                 <h2 className="detail-block-title">Engineering Methodology</h2>
-                <div className="detail-stages-list">
-                  {service.process.map((stg, i) => (
-                    <div key={stg.title || stg} className="detail-stage-card">
-                      <div className="detail-stage-number">{String(i + 1).padStart(2, '0')}</div>
-                      <div className="detail-stage-content">
-                        <h3 className="detail-stage-title">{stg.title || stg}</h3>
-                        {stg.description && <p className="detail-stage-desc">{stg.description}</p>}
+                <div className="workflow-steps-list">
+                  {workflowSteps.map((stg, i) => (
+                    <div key={stg.title || stg.step || i} className="workflow-step-card">
+                      <div className="workflow-step-number">
+                        {stg.step || String(i + 1).padStart(2, '0')}
+                      </div>
+                      <div>
+                        <h3 className="workflow-step-heading">{stg.title || stg}</h3>
+                        {(stg.desc || stg.description) && (
+                          <p className="workflow-step-desc">{stg.desc || stg.description}</p>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -118,38 +131,49 @@ export default function ServiceDetail() {
             )}
 
             {/* FAQ Accordion */}
-            {service.faqs && service.faqs.length > 0 && (
+            {faqItems.length > 0 && (
               <div className="detail-block">
                 <h2 className="detail-block-title">Frequently Asked Questions</h2>
                 <div className="detail-faqs-group">
-                  {service.faqs.map((faq) => (
-                    <details key={faq.question} className="faq-item">
-                      <summary>{faq.question}</summary>
-                      <p>{faq.answer}</p>
-                    </details>
-                  ))}
+                  {faqItems.map((faq) => {
+                    // Support both {q, a} and {question, answer} shapes
+                    const question = faq.q || faq.question;
+                    const answer = faq.a || faq.answer;
+                    return (
+                      <details key={question} className="faq-item">
+                        <summary>{question}</summary>
+                        <p>{answer}</p>
+                      </details>
+                    );
+                  })}
                 </div>
               </div>
             )}
           </div>
 
           {/* Sticky Sidebar */}
-          <aside className="detail-sidebar-column">
+          <aside className="detail-sidebar">
             <div className="sidebar-box">
               <h3 className="sidebar-box-title">Capabilities</h3>
-              <ul className="sidebar-meta-list">
+              <ul className="sidebar-data-list">
                 <li>
-                  <span className="sidebar-meta-label">Domain</span>
-                  <span className="sidebar-meta-value">{service.category || 'Engineering'}</span>
+                  <span className="sidebar-data-label">Domain</span>
+                  <span className="sidebar-data-val">{service.category || 'Engineering'}</span>
                 </li>
                 <li>
-                  <span className="sidebar-meta-label">Delivery</span>
-                  <span className="sidebar-meta-value">Milestone / Dedicated</span>
+                  <span className="sidebar-data-label">Delivery</span>
+                  <span className="sidebar-data-val">Milestone / Dedicated</span>
                 </li>
                 <li>
-                  <span className="sidebar-meta-label">Engagement</span>
-                  <span className="sidebar-meta-value">Direct Technical Lead</span>
+                  <span className="sidebar-data-label">Engagement</span>
+                  <span className="sidebar-data-val">Direct Technical Lead</span>
                 </li>
+                {service.stat && (
+                  <li>
+                    <span className="sidebar-data-label">Track Record</span>
+                    <span className="sidebar-data-val">{service.stat}</span>
+                  </li>
+                )}
               </ul>
             </div>
 
@@ -185,29 +209,31 @@ export default function ServiceDetail() {
       </section>
 
       {/* ── 3 Related Cards ─────────────────────────────────────── */}
-      <section className="related-section section-lazy">
-        <div className="container">
-          <div className="related-section-header">
-            <span className="section-tag">EXPLORE MORE</span>
-            <h2>Related Engineering Services</h2>
-          </div>
+      {relatedServices.length > 0 && (
+        <section className="related-section section-lazy">
+          <div className="container">
+            <div className="related-section-header">
+              <span className="section-tag">EXPLORE MORE</span>
+              <h2>Related Engineering Services</h2>
+            </div>
 
-          <div className="grid-cards">
-            {relatedServices.map((rel) => (
-              <Card
-                key={rel.id}
-                to={`/services/${rel.id}`}
-                image={rel.image}
-                imageAlt={rel.title}
-                tag={rel.category}
-                title={rel.title}
-                description={rel.tagline || rel.points?.join(' · ')}
-                actionText="View details &rarr;"
-              />
-            ))}
+            <div className="grid-cards">
+              {relatedServices.map((rel) => (
+                <Card
+                  key={rel.id}
+                  to={`/services/${rel.id}`}
+                  image={rel.image}
+                  imageAlt={rel.title}
+                  tag={rel.category}
+                  title={rel.title}
+                  description={rel.tagline || rel.points?.join(' · ')}
+                  actionText="View details &rarr;"
+                />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ── Single Dark Accent Section: DarkBand CTA ── */}
       <DarkBand

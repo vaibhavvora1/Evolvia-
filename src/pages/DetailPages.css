@@ -31,18 +31,20 @@
 }
 
 .detail-block-title {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.2vw, 1.75rem);
+  font-weight: 700;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
   border-bottom: 2px solid var(--black);
   display: inline-block;
 }
 
 .detail-paragraphs p {
-  font-size: 1.05rem;
-  line-height: 1.75;
+  font-size: clamp(1.05rem, 1.2vw, 1.15rem);
+  line-height: 1.8;
   color: var(--text);
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 /* ── Checklists & Lists ───────────────────────────────────────────── */
@@ -51,15 +53,15 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
 .detail-checklist-item {
   position: relative;
-  padding: 0 0 0 32px;
-  font-size: 1rem;
+  padding: 0 0 0 34px;
+  font-size: 1.05rem;
   color: var(--text);
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 .detail-checklist-item::before {
@@ -70,13 +72,31 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   background-color: var(--green);
   color: var(--black);
   border-radius: 50%;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 800;
+}
+
+.checklist-bullet {
+  display: none !important;
+}
+
+/* ── Quotes in Detail Pages ──────────────────────────────────────── */
+.detail-quote-block {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--black);
+  background-color: var(--card);
+  border-left: 4px solid var(--green);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 24px 28px;
+  margin: 0;
 }
 
 /* ── Workflow Steps ───────────────────────────────────────────────── */
@@ -90,52 +110,54 @@
   background-color: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 22px 24px;
+  padding: 24px 28px;
   display: flex;
-  gap: 20px;
+  gap: 22px;
   align-items: flex-start;
 }
 
 .workflow-step-number {
   font-family: var(--font-heading);
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 800;
   color: var(--black);
   background-color: var(--green-soft);
-  padding: 6px 12px;
+  padding: 8px 14px;
   border-radius: var(--radius-sm);
   flex-shrink: 0;
 }
 
 .workflow-step-heading {
-  font-size: 1.1rem;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
   margin-bottom: 8px;
 }
 
 .workflow-step-desc {
-  font-size: 0.95rem;
+  font-size: 1.025rem;
   color: var(--text-muted);
   margin: 0;
-  line-height: 1.65;
+  line-height: 1.7;
 }
 
 /* ── Technology Tags ──────────────────────────────────────────────── */
 .tech-tag-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 16px;
+  gap: 12px;
+  margin-top: 18px;
 }
 
 .tech-tag-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   background-color: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius-pill);
-  padding: 8px 18px;
-  font-size: 0.875rem;
+  padding: 9px 20px;
+  font-size: 0.925rem;
   font-weight: 600;
   color: var(--black);
   text-decoration: none;
@@ -166,7 +188,7 @@
   border-radius: var(--radius-pill);
   padding: 8px 18px;
   font-family: var(--font-body);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--black);
   text-decoration: none;
@@ -185,9 +207,9 @@
 /* ── Gallery Images ───────────────────────────────────────────────── */
 .detail-gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-  margin-top: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
 }
 
 .detail-gallery-img {
@@ -198,8 +220,9 @@
   border: 1px solid var(--border);
 }
 
-/* ── Sidebar Card ─────────────────────────────────────────────────── */
-.detail-sidebar {
+/* ── Sidebar Card & Meta Lists ────────────────────────────────────── */
+.detail-sidebar,
+.detail-sidebar-column {
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -211,38 +234,71 @@
   background-color: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 26px;
+  padding: 28px;
 }
 
 .sidebar-box-title {
-  font-size: 1.1rem;
-  margin-bottom: 18px;
-  padding-bottom: 10px;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
 }
 
-.sidebar-data-list {
+.sidebar-data-list,
+.sidebar-meta-list {
   list-style: none;
   padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  font-size: 0.925rem;
+  gap: 16px;
 }
 
-.sidebar-data-label {
+.sidebar-data-label,
+.sidebar-meta-label {
   font-weight: 700;
   color: var(--black);
   display: block;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 3px;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
 }
 
-.sidebar-data-val {
+.sidebar-data-val,
+.sidebar-meta-value {
   color: var(--text-muted);
-  line-height: 1.5;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+/* ── Sidebar Metrics List ─────────────────────────────────────────── */
+.sidebar-metrics-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sidebar-metric-number {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--black);
+  line-height: 1.1;
+}
+
+.sidebar-metric-label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 4px;
 }
 
 /* ── Related Cards Section ────────────────────────────────────────── */
@@ -264,7 +320,8 @@
     gap: 40px;
   }
 
-  .detail-sidebar {
+  .detail-sidebar,
+  .detail-sidebar-column {
     position: static;
   }
 
@@ -279,3 +336,63 @@
     padding: 48px 0;
   }
 }
+
+/* ── FAQ Accordion ────────────────────────────────────────────────── */
+.detail-faqs-group {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.faq-item {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.faq-item[open] {
+  border-color: var(--green);
+}
+
+.faq-item summary {
+  padding: 20px 24px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--black);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  user-select: none;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: '+';
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--green);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.faq-item[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.faq-item > p {
+  padding: 0 24px 20px;
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+  margin: 0;
+}
+

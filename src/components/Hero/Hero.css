@@ -84,34 +84,34 @@
 
 .hero-badge-label {
   display: inline-block;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--black);
   background-color: var(--green);
-  padding: 5px 12px;
+  padding: 5px 13px;
   border-radius: var(--radius-sm);
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .hero-quote-heading {
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  font-size: clamp(2.8rem, 5vw, 5rem);
   font-weight: 800;
   color: var(--bg);
   line-height: 1.05;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   text-wrap: balance;
   margin-bottom: 18px;
 }
 
 .hero-single-subtext {
-  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
-  color: rgba(245, 240, 230, 0.84);
-  line-height: 1.5;
-  margin-bottom: 28px;
-  max-width: 540px;
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  color: rgba(245, 240, 230, 0.88);
+  line-height: 1.65;
+  margin-bottom: 32px;
+  max-width: 560px;
 }
 
 .hero-button-group {
@@ -123,8 +123,9 @@
 }
 
 .hero-btn {
-  padding: 13px 28px;
-  font-size: 0.95rem;
+  padding: 14px 30px;
+  font-size: 1rem;
+  min-height: 50px;
 }
 
 .hero-contact-row {
@@ -141,7 +142,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   color: rgba(245, 240, 230, 0.85);
   text-decoration: none;
   transition: color 0.25s ease;
@@ -167,13 +168,13 @@
 .hero-testimonial-card {
   position: relative;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   background: rgba(250, 246, 236, 0.15); /* Translucent light beige tint */
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(183, 228, 168, 0.4); /* Subtle green border */
   border-radius: var(--radius-lg);
-  padding: 28px;
+  padding: 30px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -195,7 +196,7 @@
 
 .hero-testi-badge {
   font-family: var(--font-display);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -204,11 +205,11 @@
 
 .hero-testi-metric {
   font-family: var(--font-display);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: var(--black);
   background-color: var(--green);
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: var(--radius-sm);
 }
 
@@ -226,9 +227,9 @@
 }
 
 .hero-testi-quote {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--bg);
-  line-height: 1.55;
+  line-height: 1.65;
   margin-bottom: 18px;
   font-style: italic;
   font-weight: 500;
@@ -241,13 +242,13 @@
 }
 
 .hero-testi-line {
-  width: 20px;
+  width: 24px;
   height: 2px;
   background-color: var(--green);
 }
 
 .hero-testi-name {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--bg);
   letter-spacing: 0.02em;
@@ -296,21 +297,21 @@
   }
 
   .hero-badge-label {
-    font-size: 0.75rem;
-    padding: 4px 11px;
-    margin-bottom: 14px;
+    font-size: 0.8rem;
+    padding: 5px 12px;
+    margin-bottom: 16px;
     letter-spacing: 0.08em;
   }
 
   .hero-quote-heading {
     line-height: 1.12;
     letter-spacing: -0.02em;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
 
   .hero-single-subtext {
-    line-height: 1.55;
-    margin-bottom: 22px;
+    line-height: 1.6;
+    margin-bottom: 24px;
     color: rgba(245, 240, 230, 0.88);
   }
 
@@ -324,9 +325,9 @@
   }
 
   .hero-btn {
-    padding: 11px 24px;
-    font-size: 0.925rem;
-    min-height: 44px;
+    padding: 12px 26px;
+    font-size: 0.975rem;
+    min-height: 46px;
   }
 
   .hero-contact-row {
@@ -334,12 +335,12 @@
     flex-direction: row;
     align-items: center;
     gap: clamp(14px, 2vw, 22px);
-    padding-top: 16px;
+    padding-top: 18px;
     flex-wrap: wrap;
   }
 
   .hero-contact-item {
-    font-size: 0.825rem;
+    font-size: 0.9rem;
     gap: 7px;
   }
 }
@@ -357,12 +358,12 @@
   }
 
   .hero-quote-heading {
-    font-size: clamp(2.2rem, 3.8vw, 2.85rem);
+    font-size: clamp(2.4rem, 4vw, 3.2rem);
   }
 
   .hero-single-subtext {
-    font-size: clamp(0.95rem, 1.3vw, 1.05rem);
-    max-width: 480px;
+    font-size: clamp(1.025rem, 1.4vw, 1.15rem);
+    max-width: 500px;
   }
 
   .hero-right-content {
@@ -372,8 +373,8 @@
   }
 
   .hero-testimonial-card {
-    max-width: 360px;
-    padding: 22px 24px;
+    max-width: 380px;
+    padding: 24px 26px;
     border-radius: var(--radius-md);
   }
 
@@ -383,9 +384,9 @@
   }
 
   .hero-testi-quote {
-    font-size: 0.9rem;
-    line-height: 1.5;
-    margin-bottom: 14px;
+    font-size: 0.975rem;
+    line-height: 1.55;
+    margin-bottom: 16px;
   }
 
   .hero-testi-body {
@@ -402,7 +403,7 @@
 @media (min-width: 768px) and (max-width: 899px) {
   .hero-container-layout {
     grid-template-columns: 1fr;
-    gap: 22px;
+    gap: 24px;
     max-width: 720px;
     margin-left: auto;
     margin-right: auto;
@@ -415,21 +416,21 @@
   }
 
   .hero-quote-heading {
-    font-size: clamp(2.15rem, 4.2vw, 2.65rem);
+    font-size: clamp(2.3rem, 4.4vw, 2.85rem);
     max-width: 640px;
   }
 
   .hero-single-subtext {
-    font-size: 1rem;
-    max-width: 560px;
+    font-size: 1.05rem;
+    max-width: 580px;
   }
 
   .hero-button-group {
-    margin-bottom: 20px;
+    margin-bottom: 22px;
   }
 
   .hero-contact-row {
-    padding-top: 14px;
+    padding-top: 16px;
     gap: 18px;
   }
 
@@ -441,13 +442,13 @@
 
   .hero-testimonial-card {
     max-width: 100%;
-    padding: 18px 22px;
+    padding: 22px 24px;
     border-radius: var(--radius-md);
   }
 
   .hero-testi-top {
-    padding-bottom: 10px;
-    margin-bottom: 12px;
+    padding-bottom: 12px;
+    margin-bottom: 14px;
   }
 
   .hero-testi-body {
@@ -455,14 +456,14 @@
   }
 
   .hero-testi-quote {
-    font-size: 0.9rem;
-    line-height: 1.5;
-    margin-bottom: 12px;
+    font-size: 0.975rem;
+    line-height: 1.55;
+    margin-bottom: 14px;
   }
 
   .hero-testi-indicators {
-    padding-top: 12px;
-    margin-top: 12px;
+    padding-top: 14px;
+    margin-top: 14px;
   }
 }
 

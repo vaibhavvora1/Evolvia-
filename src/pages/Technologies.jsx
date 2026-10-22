@@ -76,14 +76,14 @@ export default function Technologies() {
                   type="button"
                   onClick={() => setActiveCategory(cat)}
                   style={{
-                    padding: '8px 18px',
+                    padding: '9px 20px',
                     borderRadius: 'var(--radius-pill)',
                     border: '1px solid var(--border)',
                     backgroundColor: activeCategory === cat ? 'var(--black)' : 'var(--card)',
                     color: activeCategory === cat ? 'var(--green)' : 'var(--black)',
                     fontWeight: activeCategory === cat ? 700 : 500,
                     cursor: 'pointer',
-                    fontSize: '0.875rem',
+                    fontSize: '0.95rem',
                     transition: 'background-color 0.25s ease, color 0.25s ease',
                   }}
                 >

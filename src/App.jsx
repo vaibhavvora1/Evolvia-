@@ -52,6 +52,8 @@ export default function App() {
         <Route path="/cookie-policy" element={<CookiePolicy />} />
 
         {/* Route Aliases for Backwards Compatibility */}
+        <Route path="/solutions" element={<Navigate to="/services" replace />} />
+        <Route path="/solutions/:slug" element={<ServiceDetail />} />
         <Route path="/portfolio" element={<Navigate to="/works" replace />} />
         <Route path="/portfolio/:slug" element={<WorkDetail />} />
         <Route path="/technologies" element={<Navigate to="/technology" replace />} />

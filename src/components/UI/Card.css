@@ -97,27 +97,27 @@
 .evolvia-card-tag {
   display: inline-block;
   font-family: var(--font-body);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   background-color: var(--green-soft);
   color: var(--black);
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: var(--radius-sm);
   line-height: 1;
 }
 
 .evolvia-card-date {
   font-family: var(--font-body);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--text-muted);
 }
 
-/* ── Title (1.3-1.45rem, weight 600, line-height 1.25) ─────────────── */
+/* ── Title (1.4-1.7rem, weight 600, line-height 1.25) ─────────────── */
 .evolvia-card-title {
   font-family: var(--font-display);
-  font-size: clamp(1.3rem, 1.8vw, 1.45rem);
+  font-size: clamp(1.4rem, 1.8vw, 1.7rem);
   font-weight: 600;
   line-height: 1.25;
   color: var(--black);
@@ -125,12 +125,12 @@
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ── Description (0.97rem, line-height 1.75, max 3 lines) ──────────── */
+/* ── Description (1rem–1.075rem, line-height 1.7, max 3 lines) ───── */
 .evolvia-card-desc {
   font-family: var(--font-body);
-  font-size: 0.97rem;
-  line-height: 1.75;
-  color: rgba(17, 17, 17, 0.70);
+  font-size: clamp(1rem, 1.1vw, 1.075rem);
+  line-height: 1.7;
+  color: rgba(17, 17, 17, 0.72);
   margin-bottom: 0;
   overflow: hidden;
   display: -webkit-box;
@@ -143,14 +143,14 @@
 /* ── Action Link (pinned to bottom, weight 600, sliding arrow) ────── */
 .evolvia-card-action {
   font-family: var(--font-body);
-  font-size: 0.925rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--black);
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 22px;
-  padding-top: 16px;
+  margin-top: 24px;
+  padding-top: 18px;
   border-top: 1px solid var(--border);
 }
 
@@ -266,13 +266,13 @@
 /* ── Mobile Responsive Overrides ───────────────────────────────────── */
 @media (max-width: 640px) {
   .evolvia-card-body {
-    padding: 22px;
+    padding: 22px 20px;
   }
 
   .cards-grid,
   .compact-cards-grid,
   .services-cards-grid,
   .grid-cards {
-    gap: 24px;
+    gap: 20px;
   }
 }

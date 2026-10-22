@@ -26,6 +26,7 @@
 
 .about-preview-copy p {
   color: var(--text);
+  font-size: clamp(1.05rem, 1.2vw, 1.15rem);
   margin-bottom: 20px;
   line-height: 1.75;
 }
@@ -111,14 +112,17 @@
 
 .careers-strip-title {
   color: var(--text-light);
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 3.5vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.15;
   margin-bottom: 12px;
 }
 
 .careers-strip-subtext {
-  color: rgba(245, 240, 230, 0.8);
-  font-size: 1rem;
-  line-height: 1.65;
+  color: rgba(245, 240, 230, 0.85);
+  font-size: clamp(1.05rem, 1.2vw, 1.15rem);
+  line-height: 1.7;
   margin: 0;
 }
 

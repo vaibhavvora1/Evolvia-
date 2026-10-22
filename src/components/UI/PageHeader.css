@@ -9,9 +9,9 @@
   position: relative;
   background-color: var(--black);
   color: var(--text-light);
-  padding-top: calc(var(--navbar-h) + 48px);
-  padding-bottom: 48px;
-  min-height: 240px;
+  padding-top: calc(var(--navbar-h) + 56px);
+  padding-bottom: 56px;
+  min-height: 260px;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -58,12 +58,12 @@
 .page-header-tag {
   display: inline-block;
   font-family: var(--font-body);
-  font-size: 0.75rem;
+  font-size: 0.825rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.09em;
   color: var(--green);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .page-header-breadcrumbs {
@@ -71,7 +71,7 @@
   align-items: center;
   gap: 8px;
   font-family: var(--font-body);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -102,12 +102,12 @@
 
 .page-header-title {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 3.8vw, 3rem);
+  font-size: clamp(2.5rem, 4.2vw, 4rem);
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.1;
   color: var(--text-light);
-  letter-spacing: -0.015em;
-  margin-bottom: 14px;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
 }
 
 .page-header-rule {
@@ -120,11 +120,11 @@
 
 .page-header-subtitle {
   font-family: var(--font-body);
-  font-size: clamp(1rem, 1.4vw, 1.125rem);
+  font-size: clamp(1.1rem, 1.5vw, 1.25rem);
   line-height: 1.7;
-  color: rgba(245, 240, 230, 0.82);
+  color: rgba(245, 240, 230, 0.85);
   margin-bottom: 0;
-  max-width: 720px;
+  max-width: 740px;
 }
 
 .page-header-actions {
@@ -136,8 +136,8 @@
 
 @media (max-width: 768px) {
   .page-header-band {
-    padding-top: calc(var(--navbar-h) + 32px);
-    padding-bottom: 36px;
-    min-height: 200px;
+    padding-top: calc(var(--navbar-h) + 36px);
+    padding-bottom: 40px;
+    min-height: 210px;
   }
 }

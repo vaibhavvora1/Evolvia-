@@ -23,27 +23,27 @@
 }
 
 .legal-document-header h1 {
-  margin: 12px 0 14px;
-  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  margin: 12px 0 16px;
+  font-size: clamp(2.5rem, 4.2vw, 4rem);
 }
 
 .legal-document-header .legal-document-subtitle {
   max-width: 65ch;
   margin: 0;
   color: var(--text-muted);
-  font-size: 1.05rem;
+  font-size: clamp(1.1rem, 1.3vw, 1.25rem);
 }
 
 .legal-updated {
   margin: 20px 0 0;
   color: var(--text-muted);
-  font-size: 0.86rem;
+  font-size: 0.9rem;
 }
 
 .legal-template-note {
   margin: 7px 0 0;
   color: var(--text-muted);
-  font-size: 0.82rem;
+  font-size: 0.85rem;
 }
 
 .legal-document-content {
@@ -64,8 +64,8 @@
 }
 
 .legal-toc h2 {
-  margin: 0 0 12px;
-  font-size: 1.1rem;
+  margin: 0 0 14px;
+  font-size: 1.25rem;
 }
 
 .legal-toc ol {
@@ -75,7 +75,7 @@
 
 .legal-toc li {
   margin-bottom: 8px;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 .legal-toc a {
@@ -90,11 +90,12 @@
 .legal-body h2 {
   margin-top: 36px;
   margin-bottom: 14px;
-  font-size: 1.35rem;
+  font-size: 1.5rem;
 }
 
 .legal-body p {
-  line-height: 1.7;
+  line-height: 1.75;
   color: var(--text);
-  margin-bottom: 16px;
+  font-size: 1.05rem;
+  margin-bottom: 18px;
 }
