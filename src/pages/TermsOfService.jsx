@@ -1,6 +1,8 @@
 import React from 'react';
-import PageHero from '../components/UI/PageHero';
+import PageHeader from '../components/UI/PageHeader';
+import DarkBand from '../components/UI/DarkBand';
 import usePageMeta from '../hooks/usePageMeta';
+import './LegalPage.css';
 
 export default function TermsOfService() {
   usePageMeta(
@@ -11,13 +13,13 @@ export default function TermsOfService() {
 
   return (
     <div className="legal-page">
-      <PageHero
+      <PageHeader
         tag="LEGAL & TRANSPARENCY"
         title="Terms of Service"
         subtitle="Last updated: October 2026. Please read the terms of service governing this website."
       />
 
-      <section className="page-section">
+      <section className="page-section section-lazy">
         <div className="container legal-content-card">
           <h2>1. Acceptance of Terms</h2>
           <p>
@@ -41,6 +43,14 @@ export default function TermsOfService() {
           </p>
         </div>
       </section>
+
+      <DarkBand
+        tag="GOVERNANCE"
+        title="Enterprise Partnerships"
+        description="Custom master services agreements (MSAs) and bespoke enterprise licensing terms available upon request."
+        primaryActionText="Inquire With Us"
+        primaryActionTo="/contact"
+      />
     </div>
   );
 }

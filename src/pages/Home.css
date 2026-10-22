@@ -1,0 +1,169 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Home Page Styles
+   Strict Palette: --bg (#F5F0E6), --bg-alt (#EDE6D6), --card (#FAF6EC),
+   --black (#111111), --green (#B7E4A8), --green-soft (#DDF2D3)
+   ═══════════════════════════════════════════════════════════════════ */
+
+.home-page {
+  background-color: var(--bg);
+}
+
+.home-content {
+  position: relative;
+  z-index: 2;
+  background-color: var(--bg);
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 -12px 32px color-mix(in srgb, var(--black) 12%, transparent);
+}
+
+/* ── About Preview ────────────────────────────────────────────────── */
+.about-preview-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.about-preview-copy p {
+  color: var(--text);
+  margin-bottom: 20px;
+  line-height: 1.75;
+}
+
+.about-preview-actions {
+  margin-top: 28px;
+}
+
+/* About image: fixed size, centered */
+.about-preview-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background-color: var(--card);
+}
+
+.about-preview-image-frame {
+  width: 100% !important;
+  max-width: 560px !important;
+  height: 400px !important;
+  aspect-ratio: auto !important;
+  margin: 0 auto;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-preview-image-frame img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* ── Team Preview: identical image box for every member ───────────── */
+.team-preview-grid {
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: center;
+}
+
+/* Size the wrapper (Card's .evolvia-card-media), not the <img> */
+.team-preview-grid .evolvia-card-media {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 4 / 5 !important;
+  overflow: hidden;
+  display: block;
+}
+
+.team-preview-grid .evolvia-card-media img,
+.team-preview-grid .evolvia-card-img {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: auto !important;
+  object-fit: cover;
+  object-position: center top; /* keeps faces in frame; use "center" to center fully */
+  display: block;
+}
+
+/* ── Careers Strip ────────────────────────────────────────────────── */
+.careers-strip-section {
+  background-color: var(--black);
+  color: var(--text-light);
+  padding: clamp(56px, 7vw, 80px) 0;
+}
+
+.careers-strip-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.careers-strip-content {
+  max-width: 680px;
+}
+
+.careers-strip-title {
+  color: var(--text-light);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  margin-bottom: 12px;
+}
+
+.careers-strip-subtext {
+  color: rgba(245, 240, 230, 0.8);
+  font-size: 1rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.careers-strip-btn {
+  background-color: var(--green);
+  color: var(--black);
+  border-color: var(--green);
+}
+
+.careers-strip-btn:hover {
+  background-color: var(--bg);
+  color: var(--black);
+  border-color: var(--bg);
+}
+
+/* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .team-preview-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 991px) {
+  .about-preview-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .careers-strip-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-preview-image-frame {
+    height: 280px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .team-preview-grid {
+    grid-template-columns: 1fr;
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

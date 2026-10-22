@@ -1,138 +1,171 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import PageHero from '../components/UI/PageHero';
-import HoverCard from '../components/UI/HoverCard';
-import { IconArrowRight } from '../components/UI/Icons';
+import PageHeader from '../components/UI/PageHeader';
+import DarkBand from '../components/UI/DarkBand';
+import Card from '../components/UI/Card';
 import usePageMeta from '../hooks/usePageMeta';
-import useReveal from '../hooks/useReveal';
-import { team } from '../data/demoData';
+import { team } from '../data/team';
+import { COMPANY_NAME, TAGLINE, ADDRESS } from '../config/contact';
+import { prefetchChunk } from '../utils/prefetch';
+import './About.css';
 
-const VALUES = [
+const PRINCIPLES = [
   {
     title: 'Clarity Before Complexity',
-    description: 'We understand the operational goals and user constraints before writing code, choosing pragmatic architecture over hype.',
     tag: 'PRINCIPLE 01',
+    description: 'We understand the operational goals and user constraints before writing code, choosing pragmatic architecture over trend-chasing.',
   },
   {
     title: 'Useful Intelligence',
-    description: 'We integrate AI models and retrieval systems where they deliver verified commercial value, not as speculative add-ons.',
     tag: 'PRINCIPLE 02',
+    description: 'We integrate AI models and retrieval systems where they deliver verified commercial utility, not as speculative add-ons.',
   },
   {
     title: 'Reliability by Design',
-    description: 'Every system is engineered for resilience, clear telemetry, and low operational friction under real-world loads.',
     tag: 'PRINCIPLE 03',
+    description: 'Every system is engineered for resilience, clear telemetry, and low operational friction under real-world traffic.',
   },
 ];
 
 export default function About() {
   usePageMeta(
-    'About Us — Evolvia Tech',
-    'Learn about Evolvia Tech: our mission, multidisciplinary engineering team, and disciplined approach to software and AI systems.',
+    `About Us — ${COMPANY_NAME}`,
+    `Learn about ${COMPANY_NAME}: our mission, multidisciplinary engineering team, and disciplined approach to software and AI systems.`,
     {
       canonicalUrl: 'https://evolvia.tech/about',
       ogImage: 'https://evolvia.tech/about.webp',
     }
   );
 
-  const valuesRef = useReveal();
-  const teamRef = useReveal();
-
   return (
     <div className="about-page">
-      <PageHero
-        tag="ABOUT EVOLVIA TECH"
+      {/* ── Dark PageHeader Band ── */}
+      <PageHeader
+        tag="WHO WE ARE"
         title="Technology Should Make Complex Systems Feel Simple."
-        subtitle="At Evolvia, we bridge ambitious product vision and disciplined execution. We engineer digital platforms, intelligent systems, and scalable cloud architectures that empower leaders to operate with total confidence."
-        image="/about.webp"
-        imageAlt="Evolvia Tech Engineering Headquarters"
+        subtitle={`At ${COMPANY_NAME}, we bridge ambitious product vision and disciplined technical execution. We engineer digital platforms, intelligent systems, and scalable cloud architectures.`}
+        bannerImage="/about.webp"
+        bannerAlt="Evolvia Tech Engineering Studio"
         actions={
-          <Link to="/contact" className="btn btn-primary">
-            Work With Us <IconArrowRight size={16} />
-          </Link>
+          <>
+            <Link to="/contact" className="btn btn-primary">
+              Build with Us &rarr;
+            </Link>
+            <Link to="/services" className="btn btn-outline-light">
+              Our Services
+            </Link>
+          </>
         }
       />
 
       {/* ── Mission & Story ── */}
-      <section className="page-section">
+      <section className="section">
         <div className="container">
-          <div className="content-prose-block">
-            <span className="section-tag">OUR PURPOSE</span>
-            <h2 className="section-title">
-              Disciplined Engineering for Ambitious Teams
+          <div style={{ maxWidth: '840px', margin: '0 auto' }}>
+            <span className="section-tag">OUR MISSION</span>
+            <h2 style={{ marginTop: '12px', marginBottom: '24px' }}>
+              &ldquo;{TAGLINE}&rdquo;
             </h2>
-            <p className="lead-paragraph">
-              Founded on the conviction that modern software must be robust, maintainable, and aligned with real business metrics, Evolvia brings together deep computational expertise and human-centered design.
+            <p className="lead" style={{ marginBottom: '20px' }}>
+              Founded in {ADDRESS}, {COMPANY_NAME} was established on the conviction that high-performing software
+              is the product of deliberate constraints, strong communication, and senior craft.
             </p>
-            <p className="body-paragraph">
-              Based in Ahmedabad, India, our multidisciplinary team partners with startups and enterprise teams globally. We handle the entire lifecycle — from technical discovery, database modeling, and interface development to cloud deployment, automated testing, and ongoing observability.
+            <p style={{ marginBottom: '20px', color: 'var(--text)' }}>
+              Too often, modern software suffers from needless dependency bloat, fragile microservices,
+              and speculative AI integrations that hallucinate under production conditions. We advocate for
+              systems that are easy to reason about, maintainable by internal teams, and optimized for speed.
+            </p>
+            <p style={{ color: 'var(--text)' }}>
+              Whether you are an early-stage startup needing a bulletproof launch prototype or an established enterprise
+              modernizing legacy workflows, our senior engineers work directly with your stakeholders from day one.
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── Core Values (Bruno Rocha Hover Cards) ── */}
-      <section className="page-section bg-alt reveal-item" ref={valuesRef}>
+      {/* ── Core Principles ── */}
+      <section className="section section-alt">
         <div className="container">
-          <div className="section-header-compact">
-            <span className="section-tag">OUR VALUES</span>
-            <h2 className="section-title-compact">Principles We Build By</h2>
-            <p className="section-lead-compact">
-              The fundamental engineering and design standards that guide every decision we make.
-            </p>
+          <div className="section-header">
+            <div className="section-header-left">
+              <span className="section-tag">OUR VALUES</span>
+              <h2 className="section-title">Guiding Engineering Principles</h2>
+              <p className="section-subtitle">
+                The operating standards that shape our technical decisions and codebase reviews.
+              </p>
+            </div>
           </div>
 
-          <div className="compact-cards-grid">
-            {VALUES.map((val) => (
-              <HoverCard
-                key={val.title}
-                title={val.title}
-                tag={val.tag}
-                description={val.description}
-                actionText="Explore values"
-              />
+          <div className="grid-cards">
+            {PRINCIPLES.map((principle) => (
+              <div
+                key={principle.title}
+                style={{
+                  backgroundColor: 'var(--card)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '28px',
+                }}
+              >
+                <span className="section-tag">{principle.tag}</span>
+                <h3 style={{ marginTop: '16px', marginBottom: '12px' }}>{principle.title}</h3>
+                <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.95rem' }}>
+                  {principle.description}
+                </p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Team Section ── */}
-      <section className="page-section reveal-item" ref={teamRef}>
+      {/* ── Team Leadership Preview ── */}
+      <section className="section section-lazy">
         <div className="container">
-          <div className="section-header-compact">
-            <span className="section-tag">LEADERSHIP</span>
-            <h2 className="section-title-compact">Engineering &amp; Design Leaders</h2>
-            <p className="section-lead-compact">
-              Meet the minds driving architecture, product strategy, and computational craft.
-            </p>
+          <div className="section-header">
+            <div className="section-header-left">
+              <span className="section-tag">LEADERSHIP</span>
+              <h2 className="section-title">Meet the Team Behind Evolvia</h2>
+              <p className="section-subtitle">
+                Engineers, architects, and product designers dedicated to software excellence.
+              </p>
+            </div>
+            <Link
+              to="/team"
+              className="section-link"
+              onMouseEnter={() => prefetchChunk('/team')}
+            >
+              Meet the full team &rarr;
+            </Link>
           </div>
 
-          <div className="compact-cards-grid">
+          <div className="grid-cards about-team-grid">
             {team.map((member) => (
-              <HoverCard
+              <Card
                 key={member.id}
-                title={member.name}
-                tag={member.role}
+                to={`/team/${member.id}`}
                 image={member.image}
                 imageAlt={member.name}
-                description={`${member.bio} Specializes in ${member.expertise.join(', ')}.`}
-                actionText="View profile"
+                tag={member.role}
+                title={member.name}
+                description={member.bio || member.tagline}
+                actionText="View details &rarr;"
               />
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Final CTA ── */}
-      <section className="page-section bg-alt">
-        <div className="container cta-banner-card">
-          <h2>Ready to work with our engineering team?</h2>
-          <p>Get in touch for a technical consultation or architectural discovery session.</p>
-          <Link to="/contact" className="btn btn-primary">
-            Start a Conversation <IconArrowRight size={16} />
-          </Link>
-        </div>
-      </section>
+      {/* ── Single Dark Accent Section: DarkBand CTA ── */}
+      <DarkBand
+        tag="COLLABORATE"
+        title="Ready to Build High-Impact Systems Together?"
+        description={`We work directly with founders and product teams. Reach out to discuss your technical challenges or schedule an engineering consultation.`}
+        primaryActionText="Build with Us"
+        primaryActionTo="/contact"
+        secondaryActionText="Explore Services"
+        secondaryActionTo="/services"
+        showContact={true}
+      />
     </div>
   );
 }

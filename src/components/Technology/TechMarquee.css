@@ -1,0 +1,133 @@
+.tech-marquee {
+  padding: 56px 0 36px;
+  background-color: var(--bg);
+}
+
+.tech-marquee__heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.tech-marquee__heading h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 0;
+}
+
+.tech-marquee__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.tech-marquee__row {
+  height: 124px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, var(--black) 6%, var(--black) 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, var(--black) 6%, var(--black) 94%, transparent);
+}
+
+.tech-marquee__track,
+.tech-marquee__group {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  align-items: center;
+}
+
+.tech-marquee__track {
+  will-change: transform;
+}
+
+.tech-marquee__group {
+  flex: none;
+  gap: 20px;
+  padding: 0 10px;
+}
+
+.tech-logo--marquee {
+  width: 104px;
+  flex: none;
+}
+
+.tech-logo--marquee .tech-logo__tile {
+  width: 72px;
+  height: 72px;
+}
+
+.tech-logo--marquee .tech-logo__icon {
+  width: 40px;
+  height: 40px;
+}
+
+.tech-marquee__row--left .tech-marquee__track {
+  animation: tech-marquee-scroll-left 40s linear infinite;
+}
+
+.tech-marquee__row--right .tech-marquee__track {
+  animation: tech-marquee-scroll-right 40s linear infinite;
+}
+
+.tech-marquee:hover .tech-marquee__track,
+.tech-marquee:focus-within .tech-marquee__track {
+  animation-play-state: paused;
+}
+
+@keyframes tech-marquee-scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes tech-marquee-scroll-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tech-marquee__row {
+    height: auto;
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .tech-marquee__track {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: none !important;
+  }
+
+  .tech-marquee__group {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px 0;
+  }
+
+  .tech-marquee__group[aria-hidden='true'] {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .tech-marquee__heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+}

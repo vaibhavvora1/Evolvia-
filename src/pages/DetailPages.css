@@ -1,0 +1,281 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Detail Pages Master Stylesheet
+   - Used by ServiceDetail, WorkDetail, TechnologyDetail, TeamDetail,
+     BlogDetail, and CareerDetail
+   - Strict palette: --bg, --bg-alt, --card, --black, --green, --green-soft
+   - Max content width ~760px for text, 1.75 line-height
+   - 40-56px between sections, 20px padding on key items
+   ═══════════════════════════════════════════════════════════════════ */
+
+.detail-page {
+  padding-bottom: 80px;
+}
+
+/* ── Detail Main Grid Layout ──────────────────────────────────────── */
+.detail-content-section {
+  padding: 72px 0;
+}
+
+.detail-layout-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 56px;
+  align-items: start;
+}
+
+.detail-main-column {
+  display: flex;
+  flex-direction: column;
+  gap: 52px;
+  max-width: 760px;
+}
+
+.detail-block-title {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--black);
+  display: inline-block;
+}
+
+.detail-paragraphs p {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+/* ── Checklists & Lists ───────────────────────────────────────────── */
+.detail-checklist {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.detail-checklist-item {
+  position: relative;
+  padding: 0 0 0 32px;
+  font-size: 1rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.detail-checklist-item::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background-color: var(--green);
+  color: var(--black);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+/* ── Workflow Steps ───────────────────────────────────────────────── */
+.workflow-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.workflow-step-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 22px 24px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.workflow-step-number {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--black);
+  background-color: var(--green-soft);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.workflow-step-heading {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.workflow-step-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.65;
+}
+
+/* ── Technology Tags ──────────────────────────────────────────────── */
+.tech-tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.tech-tag-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 8px 18px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--black);
+  text-decoration: none;
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.tech-tag-link:hover {
+  transform: translateY(-2px);
+  border-color: var(--green);
+  background-color: var(--green-soft);
+  text-decoration: none;
+}
+
+/* ── Work Detail: Tech slug tags (linked chips) ──────────────────── */
+.detail-tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.detail-tech-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 8px 18px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--black);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.detail-tech-tag:hover {
+  transform: translateY(-2px);
+  border-color: var(--green);
+  background-color: var(--green-soft);
+  text-decoration: none;
+}
+
+/* ── Gallery Images ───────────────────────────────────────────────── */
+.detail-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.detail-gallery-img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+/* ── Sidebar Card ─────────────────────────────────────────────────── */
+.detail-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: sticky;
+  top: calc(var(--navbar-h) + 24px);
+}
+
+.sidebar-box {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 26px;
+}
+
+.sidebar-box-title {
+  font-size: 1.1rem;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-data-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 0.925rem;
+}
+
+.sidebar-data-label {
+  font-weight: 700;
+  color: var(--black);
+  display: block;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 3px;
+}
+
+.sidebar-data-val {
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── Related Cards Section ────────────────────────────────────────── */
+.related-section {
+  padding: 72px 0;
+  background-color: var(--bg-alt);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.related-section-header {
+  margin-bottom: 40px;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 991px) {
+  .detail-layout-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .detail-sidebar {
+    position: static;
+  }
+
+  .detail-main-column {
+    max-width: 100%;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  .detail-content-section {
+    padding: 48px 0;
+  }
+}

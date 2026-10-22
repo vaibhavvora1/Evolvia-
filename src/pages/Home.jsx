@@ -1,313 +1,193 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import HoverCard from '../components/UI/HoverCard';
-import { IconArrowRight } from '../components/UI/Icons';
+import Hero from '../components/Hero/Hero';
+import Card from '../components/UI/Card';
+import Img from '../components/UI/Img';
+import TestimonialCard from '../components/UI/TestimonialCard';
+import TechMarquee from '../components/Technology/TechMarquee';
+import DarkBand from '../components/UI/DarkBand';
 import usePageMeta from '../hooks/usePageMeta';
-import useReveal from '../hooks/useReveal';
+import useGsapReveal from '../hooks/useGsapReveal';
+import useSectionReveal from '../hooks/useSectionReveal';
+import { services } from '../data/services';
+import { projects } from '../data/projects';
+import testimonials from '../data/testimonials';
+import technologies from '../data/technologies';
+import { team } from '../data/team';
+import { blog } from '../data/blog';
 import { prefetchChunk } from '../utils/prefetch';
-
-// TODO: replace with real clients
-const DEMO_COMPANIES = [
-  { id: 'dc1', name: 'Demo Co 1', mark: 'D1' },
-  { id: 'dc2', name: 'Demo Co 2', mark: 'D2' },
-  { id: 'dc3', name: 'Demo Co 3', mark: 'D3' },
-  { id: 'dc4', name: 'Demo Co 4', mark: 'D4' },
-  { id: 'dc5', name: 'Demo Co 5', mark: 'D5' },
-  { id: 'dc6', name: 'Demo Co 6', mark: 'D6' },
-  { id: 'dc7', name: 'Demo Co 7', mark: 'D7' },
-  { id: 'dc8', name: 'Demo Co 8', mark: 'D8' },
-];
-
-// One small card per other nav page with "View details →"
-const NAV_PAGE_REFERENCES = [
-  {
-    title: 'About Us',
-    image: '/about.webp',
-    imageAlt: 'About Evolvia Tech Team',
-    tag: 'WHO WE ARE',
-    description: 'Disciplined engineering, mission-driven leadership, and pragmatic architecture.',
-    link: '/about',
-  },
-  {
-    title: 'Our Services',
-    image: '/asset-07.webp',
-    imageAlt: 'Software Engineering Services',
-    tag: 'CAPABILITIES',
-    description: 'Full-stack web, mobile platforms, enterprise cloud systems, and applied AI.',
-    link: '/services',
-  },
-  {
-    title: 'AI Solutions',
-    image: '/asset-17.webp',
-    imageAlt: 'Enterprise AI & Automation',
-    tag: 'APPLIED AI',
-    description: 'Ground language models in enterprise data with zero hallucinations and secure agents.',
-    link: '/ai',
-  },
-  {
-    title: 'Portfolio',
-    image: '/asset-22.webp',
-    imageAlt: 'Portfolio Projects & Solutions',
-    tag: 'CASE STUDIES',
-    description: 'Proven digital platforms, FinTech workflows, and resilient cloud systems.',
-    link: '/portfolio',
-  },
-  {
-    title: 'Technologies',
-    image: '/asset-21.webp',
-    imageAlt: 'Core Technology Stack',
-    tag: 'TECH STACK',
-    description: 'Modern battle-tested stack including React, Python, Go, AWS, and PyTorch.',
-    link: '/technologies',
-  },
-  {
-    title: 'Careers',
-    image: '/asset-04.webp',
-    imageAlt: 'Engineering Careers at Evolvia',
-    tag: 'CULTURE & TEAM',
-    description: 'Remote-first engineering roles with high ownership and sustainable hours.',
-    link: '/careers',
-  },
-];
+import './Home.css';
 
 export default function Home() {
+  const homePageRef = useRef(null);
+
   usePageMeta(
-    'Evolvia Tech — Software, AI & Cloud Engineering',
-    'Evolvia Tech engineers robust digital products, AI systems, and cloud platforms for ambitious businesses. Based in Ahmedabad, India.',
+    'Evolvia Tech — Evolving Ideas into Impact',
+    'Evolvia Tech engineers scalable web applications, intelligent AI systems, and resilient cloud infrastructure. Based in Maninagar, Ahmedabad.',
     {
       canonicalUrl: 'https://evolvia.tech/',
       ogImage: 'https://evolvia.tech/hero-poster.webp',
     }
   );
 
-  const referenceGridRef = useReveal();
-  const ctaRef = useReveal();
-  const heroRef = useRef(null);
-  const heroMediaRef = useRef(null);
-  const heroContentRef = useRef(null);
-  const videoRef = useRef(null);
-  const rafIdRef = useRef(null);
-  const [loadVideo, setLoadVideo] = useState(false);
+  // Data slices
+  const servicesPreview = services.slice(0, 4);
+  const worksPreview = projects.slice(0, 3);
+  const testimonialsPreview = testimonials.slice(0, 3);
+  const teamPreview = team.slice(0, 4);
+  const blogPreview = blog.slice(0, 3);
 
-  // Background video deferment & skip logic for optimal LCP and data-saving
+  // Section heading reveal refs
+  const aboutHeadRef = useSectionReveal();
+  const servicesHeadRef = useSectionReveal();
+  const worksHeadRef = useSectionReveal();
+  const testimonialsHeadRef = useSectionReveal();
+  const teamHeadRef = useSectionReveal();
+  const blogHeadRef = useSectionReveal();
+  const careersRef = useSectionReveal();
+  const ctaRef = useSectionReveal();
+
+  // Card grid stagger reveal refs
+  const servicesGridRef = useGsapReveal();
+  const worksGridRef = useGsapReveal();
+  const testimonialsGridRef = useGsapReveal();
+  const teamGridRef = useGsapReveal();
+  const blogGridRef = useGsapReveal();
+
+  // Refresh ScrollTrigger after the poster and first Home images load.
   useEffect(() => {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const saveData = Boolean(navigator.connection && navigator.connection.saveData);
-    const isMobile = window.innerWidth < 768;
+    const homePage = homePageRef.current;
+    if (!homePage) return undefined;
 
-    if (prefersReduced || saveData || isMobile) {
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      setLoadVideo(true);
-    }, 120);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Performance control: pause video when hero is scrolled out of view or tab is hidden
-  useEffect(() => {
-    if (!loadVideo) return;
-    const video = videoRef.current;
-    const hero = heroRef.current;
-    if (!video || !hero) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      },
-      { threshold: 0.05 }
-    );
-    observer.observe(hero);
-
-    const handleVisibility = () => {
-      if (document.hidden) {
-        video.pause();
-      } else {
-        const rect = hero.getBoundingClientRect();
-        if (rect.bottom > 0 && rect.top < window.innerHeight) {
-          video.play().catch(() => {});
-        }
-      }
-    };
-    document.addEventListener('visibilitychange', handleVisibility);
-
-    return () => {
-      observer.disconnect();
-      document.removeEventListener('visibilitychange', handleVisibility);
-    };
-  }, [loadVideo]);
-
-  // Content slides over hero: slight fade & scale-down of hero text & video on scroll
-  useEffect(() => {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
-
-    const handleScroll = () => {
-      if (rafIdRef.current) return;
-      rafIdRef.current = window.requestAnimationFrame(() => {
-        const scrollY = window.scrollY;
-        const vh = window.innerHeight;
-        const progress = Math.min(1, Math.max(0, scrollY / (vh * 0.85)));
-
-        if (heroContentRef.current) {
-          heroContentRef.current.style.opacity = (1 - progress * 0.85).toFixed(3);
-          heroContentRef.current.style.transform = `translateY(${progress * 36}px) scale(${(1 - progress * 0.05).toFixed(3)})`;
-        }
-        if (heroMediaRef.current) {
-          heroMediaRef.current.style.opacity = (1 - progress * 0.45).toFixed(3);
-          heroMediaRef.current.style.transform = `scale(${(1 - progress * 0.04).toFixed(3)})`;
-        }
-        rafIdRef.current = null;
+    let animationFrame = null;
+    let cancelled = false;
+    const refreshScrollTrigger = () => {
+      import('../lib/gsap.js').then(({ ScrollTrigger }) => {
+        if (cancelled || animationFrame !== null) return;
+        animationFrame = window.requestAnimationFrame(() => {
+          animationFrame = null;
+          ScrollTrigger.refresh();
+        });
+      }).catch(() => {
+        // Silently continue if GSAP is unavailable
       });
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    const firstImages = Array.from(homePage.querySelectorAll('img')).slice(0, 2);
+    firstImages.forEach((image) => {
+      if (image.complete) {
+        refreshScrollTrigger();
+      } else {
+        image.addEventListener('load', refreshScrollTrigger, { once: true });
+      }
+    });
+
+    refreshScrollTrigger();
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (rafIdRef.current) {
-        window.cancelAnimationFrame(rafIdRef.current);
+      cancelled = true;
+      firstImages.forEach((image) => {
+        image.removeEventListener('load', refreshScrollTrigger);
+      });
+      if (animationFrame !== null) {
+        window.cancelAnimationFrame(animationFrame);
       }
     };
   }, []);
 
   return (
-    <div className="home-page">
-      {/* ── 1. Hero Section with Sticky Background Video (Stays in place behind content) ── */}
-      <section className="home-hero-section" ref={heroRef} aria-label="Hero">
-        {/* Background Video Media Layer */}
-        <div className="home-hero-bg-media" ref={heroMediaRef} aria-hidden="true">
-          {/* Instant poster image for LCP optimization */}
-          <img
-            src="/hero-poster.webp"
-            alt=""
-            className={`home-hero-poster ${loadVideo ? 'is-video-loaded' : ''}`}
-            width="1920"
-            height="1080"
-            fetchpriority="high"
-            loading="eager"
-            decoding="async"
-          />
+    <div ref={homePageRef} className="home-page">
+      {/* ── 1. Hero ────────────────────────────────────────────── */}
+      <Hero />
 
-          {/* Deferred background video (plays muted, loop, playsInline) */}
-          {loadVideo && (
-            <video
-              ref={videoRef}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster="/hero-poster.webp"
-              className="home-hero-video"
-              width="1920"
-              height="1080"
-              onCanPlay={() => {
-                if (videoRef.current) {
-                  videoRef.current.play().catch(() => {});
-                }
-              }}
-            >
-              <source src="/hero.webm" type="video/webm" />
-              <source src="/hero.mp4" type="video/mp4" />
-            </video>
-          )}
+      <div className="home-content">
+        {/* ── Technology Marquee (Below hero, inside sliding container) ── */}
+        <TechMarquee technologies={technologies} />
 
-          {/* Dark overlay for contrast */}
-          <div className="home-hero-overlay" />
-        </div>
-
-        {/* Hero Foreground Content */}
-        <div className="container home-hero-container">
-          <div className="home-hero-content" ref={heroContentRef}>
-            <span className="hero-eyebrow hero-fade-item" style={{ animationDelay: '0.1s' }}>
-              SOFTWARE &bull; AI &bull; CLOUD PLATFORMS
-            </span>
-            <h1 className="home-hero-headline hero-fade-item" style={{ animationDelay: '0.2s' }}>
-              Engineering Resilient Software, AI Systems &amp; Scalable Cloud.
-            </h1>
-            <p className="home-hero-subtext hero-fade-item" style={{ animationDelay: '0.3s' }}>
-              Evolvia Tech delivers mission-critical digital products and intelligent automation for forward-thinking enterprises.
-            </p>
-            <div className="home-hero-actions hero-fade-item" style={{ animationDelay: '0.4s' }}>
+        {/* ── 2. About Preview ───────────────────────────────────── */}
+        <section className="section section-alt about-preview-section" aria-label="About Preview">
+          <div className="container">
+            <div className="section-header">
+              <div ref={aboutHeadRef} className="section-header-left">
+                <span className="section-tag">WHO WE ARE</span>
+                <h2 className="section-title">Engineering with Purpose &amp; Precision</h2>
+                <p className="section-subtitle">
+                  We bridge ambitious product visions with production-grade engineering discipline.
+                </p>
+              </div>
               <Link
-                to="/services"
-                className="btn btn-primary"
-                onMouseEnter={() => prefetchChunk('/services')}
+                to="/about"
+                className="section-link"
+                onMouseEnter={() => prefetchChunk('/about')}
               >
-                Explore Services <IconArrowRight size={16} />
-              </Link>
-              <Link
-                to="/contact"
-                className="btn btn-outline-light"
-                onMouseEnter={() => prefetchChunk('/contact')}
-              >
-                Contact Us
+                Learn more &rarr;
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* ── 2. Content Curtain Wrapper: Slides UP and covers the video on scroll ── */}
-      <div className="home-curtain-wrapper">
-        {/* Demo Companies Marquee */}
-        <section className="home-marquee-section" aria-label="Demo Companies Marquee">
-          <div className="marquee-label-wrap">
-            <span className="marquee-subtle-label">TECHNOLOGY &amp; PARTNER ECOSYSTEM (DEMO)</span>
-          </div>
-          <div className="marquee-container">
-            <div className="marquee-track">
-              {DEMO_COMPANIES.map((company) => (
-                <div key={company.id} className="marquee-item">
-                  <span className="marquee-badge">{company.mark}</span>
-                  <span className="marquee-company-name">{company.name}</span>
+            <div className="about-preview-grid">
+              <div className="about-preview-copy">
+                <p className="lead">
+                  Evolvia Tech is an engineering-first studio. We design and build modern web applications,
+                  resilient cloud systems, and applied AI automation for fast-growing companies.
+                </p>
+                <p>
+                  We believe durable software is built on clean domain modeling, robust API boundaries,
+                  and performance that scales without bloated complexity.
+                </p>
+                <div className="about-preview-actions">
+                  <Link
+                    to="/about"
+                    className="btn btn-outline"
+                    onMouseEnter={() => prefetchChunk('/about')}
+                  >
+                    Our Philosophy &amp; Story &rarr;
+                  </Link>
                 </div>
-              ))}
-              {DEMO_COMPANIES.map((company) => (
-                <div key={`dup-${company.id}`} className="marquee-item" aria-hidden="true">
-                  <span className="marquee-badge">{company.mark}</span>
-                  <span className="marquee-company-name">{company.name}</span>
-                </div>
-              ))}
+              </div>
+              <div className="about-preview-visual">
+                <Img
+                  src="/about.webp"
+                  alt="Evolvia Tech engineering team"
+                  ratio="16/10"
+                  className="about-preview-image-frame"
+                  width="560"
+                  height="400"
+                />
+              </div>
             </div>
           </div>
         </section>
 
-        {/* One Compact Reference Grid Linking to Core Sections */}
-        <section
-          className="home-reference-section reveal-item"
-          ref={referenceGridRef}
-          aria-labelledby="home-explore-title"
-        >
+        {/* ── 3. Services Preview ────────────────────────────────── */}
+        <section className="section services-preview-section" aria-label="Services Preview">
           <div className="container">
-            <div className="section-header-compact">
-              <span className="section-tag">EXPLORE EVOLVIA</span>
-              <h2 id="home-explore-title" className="section-title-compact">
-                Explore Our Capabilities &amp; Company
-              </h2>
-              <p className="section-lead-compact">
-                Click any card below to navigate directly to the detailed section.
-              </p>
+            <div className="section-header">
+              <div ref={servicesHeadRef} className="section-header-left">
+                <span className="section-tag">CAPABILITIES</span>
+                <h2 className="section-title">Core Engineering Capabilities</h2>
+                <p className="section-subtitle">
+                  Architectural clarity across frontend product engineering, distributed systems, and AI workflows.
+                </p>
+              </div>
+              <Link
+                to="/services"
+                className="section-link"
+                onMouseEnter={() => prefetchChunk('/services')}
+              >
+                View all capabilities &rarr;
+              </Link>
             </div>
 
-            <div className="compact-cards-grid">
-              {NAV_PAGE_REFERENCES.map((item) => (
-                <HoverCard
-                  key={item.link}
-                  title={item.title}
-                  image={item.image}
-                  imageAlt={item.imageAlt}
-                  tag={item.tag}
-                  description={item.description}
-                  link={item.link}
+            <div ref={servicesGridRef} className="grid-cards">
+              {servicesPreview.map((service) => (
+                <Card
+                  key={service.id}
+                  to={`/services/${service.id}`}
+                  image={service.image}
+                  imageAlt={service.title}
+                  tag={service.badge}
+                  title={service.title}
+                  description={service.shortDescription}
                   actionText="View details →"
                 />
               ))}
@@ -315,26 +195,178 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Short CTA Strip Linking to Contact */}
-        <section
-          className="home-cta-strip-section reveal-item"
-          ref={ctaRef}
-          aria-label="Call to action"
-        >
-          <div className="container home-cta-strip-box">
-            <div className="home-cta-strip-text">
-              <h3>Have an engineering challenge or product idea?</h3>
-              <p>Speak directly with our technical leads and plan your roadmap.</p>
+        {/* ── 4. Works Preview ───────────────────────────────────── */}
+        <section className="section section-alt works-preview-section" aria-label="Selected Works">
+          <div className="container">
+            <div className="section-header">
+              <div ref={worksHeadRef} className="section-header-left">
+                <span className="section-tag">SELECTED WORKS</span>
+                <h2 className="section-title">Production Systems We Have Shipped</h2>
+                <p className="section-subtitle">
+                  Real client outcomes across SaaS platforms, mobile backends, and enterprise analytics tooling.
+                </p>
+              </div>
+              <Link
+                to="/works"
+                className="section-link"
+                onMouseEnter={() => prefetchChunk('/works')}
+              >
+                View all works &rarr;
+              </Link>
+            </div>
+
+            <div ref={worksGridRef} className="grid-cards">
+              {worksPreview.map((project) => (
+                <Card
+                  key={project.id}
+                  to={`/works/${project.id}`}
+                  image={project.image}
+                  imageAlt={project.title}
+                  tag={project.category}
+                  meta={project.year}
+                  title={project.title}
+                  description={project.shortDescription}
+                  actionText="View details →"
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── 5. What Our Clients Say (DEMO DATA - TODO: replace with real client feedback before launch) ── */}
+        <section className="section testimonials-preview-section" aria-label="Client Testimonials">
+          <div className="container">
+            <div className="section-header">
+              <div ref={testimonialsHeadRef} className="section-header-left">
+                <span className="section-tag">TESTIMONIALS</span>
+                <h2 className="section-title">What Our Clients Say</h2>
+                <p className="section-subtitle">
+                  Direct perspectives from founders and engineering leaders who build production systems with Evolvia.
+                </p>
+              </div>
+              <Link
+                to="/works"
+                className="section-link"
+                onMouseEnter={() => prefetchChunk('/works')}
+              >
+                See all &rarr;
+              </Link>
+            </div>
+
+            <div ref={testimonialsGridRef} className="grid-cards">
+              {testimonialsPreview.map((item) => (
+                <TestimonialCard key={item.id} testimonial={item} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── 6. Team Preview ────────────────────────────────────── */}
+        <section className="section section-alt team-preview-section" aria-label="Team Preview">
+          <div className="container">
+            <div className="section-header">
+              <div ref={teamHeadRef} className="section-header-left">
+                <span className="section-tag">OUR TEAM</span>
+                <h2 className="section-title">Leadership &amp; Engineering</h2>
+                <p className="section-subtitle">
+                  Direct access to seasoned engineers and designers with deep technical taste.
+                </p>
+              </div>
+              <Link
+                to="/team"
+                className="section-link"
+                onMouseEnter={() => prefetchChunk('/team')}
+              >
+                Meet the team &rarr;
+              </Link>
+            </div>
+
+            <div ref={teamGridRef} className="grid-cards team-preview-grid">
+              {teamPreview.map((member) => (
+                <Card
+                  key={member.id}
+                  to={`/team/${member.id}`}
+                  image={member.image}
+                  imageAlt={member.name}
+                  tag={member.role}
+                  title={member.name}
+                  description={member.bio || member.tagline}
+                  actionText="View details →"
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── 7. Blog Preview ────────────────────────────────────── */}
+        <section className="section blog-preview-section" aria-label="Blog Preview">
+          <div className="container">
+            <div className="section-header">
+              <div ref={blogHeadRef} className="section-header-left">
+                <span className="section-tag">INSIGHTS</span>
+                <h2 className="section-title">Engineering Perspectives</h2>
+                <p className="section-subtitle">
+                  Architecture notes, operational constraints, and technical essays from our development lab.
+                </p>
+              </div>
+              <Link
+                to="/blog"
+                className="section-link"
+                onMouseEnter={() => prefetchChunk('/blog')}
+              >
+                Read more &rarr;
+              </Link>
+            </div>
+
+            <div ref={blogGridRef} className="grid-cards">
+              {blogPreview.map((post) => (
+                <Card
+                  key={post.id}
+                  to={`/blog/${post.slug}`}
+                  image={post.image}
+                  imageAlt={post.title}
+                  tag={post.category}
+                  meta={post.date}
+                  title={post.title}
+                  description={post.summary}
+                  actionText="View details →"
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── 8. Careers Strip ───────────────────────────────────── */}
+        <section ref={careersRef} className="careers-strip-section" aria-label="Careers Strip">
+          <div className="container careers-strip-container">
+            <div className="careers-strip-content">
+              <span className="section-tag">CAREERS</span>
+              <h2 className="careers-strip-title">Join our remote-first engineering team.</h2>
+              <p className="careers-strip-subtext">
+                We offer sustainable working hours, high ownership, and direct influence over modern system architecture.
+              </p>
             </div>
             <Link
-              to="/contact"
-              className="btn btn-primary"
-              onMouseEnter={() => prefetchChunk('/contact')}
+              to="/careers"
+              className="btn btn-secondary careers-strip-btn"
+              onMouseEnter={() => prefetchChunk('/careers')}
             >
-              Get in Touch <IconArrowRight size={16} />
+              See openings &rarr;
             </Link>
           </div>
         </section>
+
+        {/* ── 9. Final Dark CTA Band ─────────────────────────────── */}
+        <div ref={ctaRef}>
+          <DarkBand
+            tag="START A PROJECT"
+            title="Ready to Evolve Your Ideas into Impact?"
+            description="Talk directly with our technical leadership. Transparent scope, fast turnaround, and fixed milestones."
+            primaryActionText="Build with Us"
+            primaryActionTo="/contact"
+            showContact={true}
+          />
+        </div>
       </div>
     </div>
   );

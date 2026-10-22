@@ -1,0 +1,67 @@
+/* ═══════════════════════════════════════════════════════════════════
+   EVOLVIA TECH — Team Page Styles
+   Identical, centered 4/5 photo frames for every member.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.team-page-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
+}
+
+.team-page-grid > .evolvia-card-link,
+.team-page-grid > .evolvia-card-wrapper {
+  width: 280px;
+  max-width: 100%;
+}
+
+/* Size the wrapper (Card's .evolvia-card-media), not the <img> */
+.team-page-grid .evolvia-card-media {
+  width: calc(100% - 48px) !important;
+  height: auto !important;
+  aspect-ratio: 4 / 5 !important;
+  margin: 24px auto 0;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: 0 16px 36px rgba(17, 17, 17, 0.06);
+}
+
+.team-page-grid .evolvia-card-media img,
+.team-page-grid .evolvia-card-img {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: auto !important;
+  object-fit: cover;
+  object-position: center top; /* keeps faces in frame; use "center" for a centered crop */
+  display: block;
+}
+
+/* Center the text under the photo */
+.team-page-grid .evolvia-card-body {
+  align-items: center;
+  text-align: center;
+}
+
+.team-page-grid .evolvia-card-meta {
+  justify-content: center;
+}
+
+.team-page-grid .evolvia-card-action {
+  justify-content: center;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .team-page-grid {
+    gap: 24px;
+  }
+
+  .team-page-grid > .evolvia-card-link,
+  .team-page-grid > .evolvia-card-wrapper {
+    width: 100%;
+    max-width: 320px;
+  }
+}

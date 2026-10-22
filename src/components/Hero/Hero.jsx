@@ -1,413 +1,299 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useTransform,
-  useReducedMotion,
-} from 'framer-motion';
-import SpecularButton from '../UI/SpecularButton';
+import { Link } from 'react-router-dom';
+import { CONTACT_EMAIL, ADDRESS, TAGLINE, COMPANY_NAME } from '../../config/contact';
+import { prefetchChunk } from '../../utils/prefetch';
 import './Hero.css';
 
-const TECH_KEYWORDS = [
-  'AI & MACHINE LEARNING',
-  'CLOUD INFRASTRUCTURE',
-  'ENTERPRISE WEB APPS',
-  'HIGH-SCALE APIS',
-  'AUTONOMOUS WORKFLOWS',
-  'INTELLIGENT DATA PLATFORMS',
-  'CROSS-PLATFORM MOBILE',
-];
-
-/* ── Edit company info here ── */
-const COMPANY = {
-  name: 'EVOLVIA TECH',
-  tagline: 'Evolving Ideas into Impact',
-  address: 'Maninagar, Ahmedabad',
-  email: 'vrvora11@gmail.com',
-};
-
-const HEADLINE_LINES = [
-  { words: ['WE', 'ARCHITECT'], gradient: false },
-  { words: ["WHAT'S", 'NEXT.'], gradient: true },
-];
-
-/* ── Right-side floating cards ── */
-const VISUAL_CARDS = [
+// Demo client testimonials for the animated right-side widget
+const HERO_TESTIMONIALS = [
   {
-    title: 'AI & Machine Learning',
-    icon: (
-      <>
-        <rect x="6" y="6" width="12" height="12" rx="2" />
-        <path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4" />
-      </>
-    ),
+    quote: "Evolvia Tech overhauled our cloud infrastructure and scaled our SaaS platform flawlessly.",
+    client: "CTO, Nova Retail",
+    metric: "99.99% Uptime",
   },
   {
-    title: 'Cloud Infrastructure',
-    icon: <path d="M7 18a4 4 0 0 1-.5-7.97A6 6 0 0 1 18 9.5 4.25 4.25 0 0 1 17.5 18H7z" />,
+    quote: "Their RAG and AI implementation reduced our system hallucinations to near zero.",
+    client: "Head of AI, Orbit Health",
+    metric: "4x Faster Queries",
   },
   {
-    title: 'Enterprise Web Apps',
-    icon: (
-      <>
-        <rect x="3" y="4" width="18" height="14" rx="2" />
-        <path d="M3 9h18M8 21h8" />
-      </>
-    ),
-  },
-  {
-    title: 'Autonomous Workflows',
-    icon: (
-      <>
-        <circle cx="6" cy="6" r="2.5" />
-        <circle cx="18" cy="18" r="2.5" />
-        <path d="M8.5 6H14a3 3 0 0 1 3 3v6.5" />
-      </>
-    ),
+    quote: "Exceptional MERN engineering and architectural precision. Delivered ahead of schedule.",
+    client: "Product Director, Pixel Foods",
+    metric: "Zero Downtime Deploy",
   },
 ];
 
-const EASE = [0.22, 1, 0.36, 1];
-
-const headlineVariants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.09, delayChildren: 0.2 } },
-};
-
-const wordVariants = {
-  hidden: { y: '110%', opacity: 0 },
-  show: { y: '0%', opacity: 1, transition: { duration: 0.75, ease: EASE } },
-};
-
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.7, delay, ease: EASE },
-});
-
-export default function Hero({ onNavigate }) {
+export default function Hero() {
   const heroRef = useRef(null);
   const videoRef = useRef(null);
-  const shouldReduceMotion = useReducedMotion();
-  const [videoAllowed, setVideoAllowed] = useState(false);
-  const [keywordIndex, setKeywordIndex] = useState(0);
+  const contentRef = useRef(null);
+  const [canPlayVideo, setCanPlayVideo] = useState(false);
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
 
-  /* ── Framer Motion scroll tracking scoped to the hero container ── */
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ['start start', 'end start'],
-  });
-
-  const textY = useTransform(
-    scrollYProgress,
-    [0, 1],
-    shouldReduceMotion ? ['0px', '0px'] : ['0px', '-80px'],
-  );
-  const textOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.75],
-    shouldReduceMotion ? [1, 1] : [1, 0],
-  );
-  const videoScale = useTransform(
-    scrollYProgress,
-    [0, 1],
-    shouldReduceMotion ? [1, 1] : [1, 1.1],
-  );
-  const overlayOpacity = useTransform(
-    scrollYProgress,
-    [0, 1],
-    shouldReduceMotion ? [0.35, 0.35] : [0.2, 0.6],
-  );
-
-  /* Rotating keyword text */
+  // ── Cycle testimonials every 4.5 seconds only when visible & desktop ──
   useEffect(() => {
-    if (shouldReduceMotion) return undefined;
-    const id = setInterval(() => {
-      setKeywordIndex((i) => (i + 1) % TECH_KEYWORDS.length);
-    }, 2600);
-    return () => clearInterval(id);
-  }, [shouldReduceMotion]);
+    const isSmall = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
+    if (isSmall) return undefined;
 
-  useEffect(() => {
-    const mobile = window.matchMedia('(max-width: 767px)');
-    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const updatePlaybackPreference = () => {
-      setVideoAllowed(!mobile.matches && !motionPreference.matches);
-    };
+    let timer = null;
+    const hero = heroRef.current;
+    if (!hero) return undefined;
 
-    updatePlaybackPreference();
-    mobile.addEventListener('change', updatePlaybackPreference);
-    motionPreference.addEventListener('change', updatePlaybackPreference);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (!timer) {
+            timer = setInterval(() => {
+              setActiveTestimonial((prev) => (prev + 1) % HERO_TESTIMONIALS.length);
+            }, 4500);
+          }
+        } else if (timer) {
+          clearInterval(timer);
+          timer = null;
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    observer.observe(hero);
+
     return () => {
-      mobile.removeEventListener('change', updatePlaybackPreference);
-      motionPreference.removeEventListener('change', updatePlaybackPreference);
+      observer.disconnect();
+      if (timer) clearInterval(timer);
     };
   }, []);
 
+  // ── Video loading ──
   useEffect(() => {
-    if (!videoAllowed || !heroRef.current || !videoRef.current) return undefined;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        videoRef.current?.play().catch(() => {});
-      } else {
-        videoRef.current?.pause();
-      }
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const saveData = Boolean(navigator.connection && navigator.connection.saveData);
+    const isSmallMobile = window.matchMedia('(max-width: 640px)').matches;
+
+    if (prefersReducedMotion || saveData || isSmallMobile) {
+      setCanPlayVideo(false);
+      return undefined;
+    }
+
+    const animId = window.requestAnimationFrame(() => {
+      setCanPlayVideo(true);
     });
+
+    return () => window.cancelAnimationFrame(animId);
+  }, []);
+
+  // ── Pause video when hero is out of view ──
+  useEffect(() => {
+    if (!canPlayVideo || !heroRef.current || !videoRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          videoRef.current?.play().catch(() => {});
+        } else {
+          videoRef.current?.pause();
+        }
+      },
+      { threshold: 0.15 },
+    );
 
     observer.observe(heroRef.current);
     return () => observer.disconnect();
-  }, [videoAllowed]);
+  }, [canPlayVideo]);
 
-  const handleAction = (e, path) => {
-    e.preventDefault();
-    if (onNavigate) {
-      onNavigate(path);
-    } else {
-      const targetId = path.replace('#', '');
-      const el = document.getElementById(targetId);
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  // ── GSAP staggered intro ──
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
 
-  const anim = (delay) => (shouldReduceMotion ? {} : fadeUp(delay));
+    const hero = heroRef.current;
+    const content = contentRef.current;
+    if (!hero || !content) return;
+
+    let ctx = null;
+
+    import('../../lib/gsap.js').then(({ gsap }) => {
+      if (!heroRef.current) return;
+
+      ctx = gsap.context(() => {
+        const items = content.querySelectorAll('.hero-anim');
+
+        gsap.set(items, { opacity: 0, y: 24 });
+        gsap.to(items, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power2.out',
+          stagger: 0.1,
+          delay: 0.1,
+          onComplete() {
+            gsap.set(items, { clearProps: 'transform,opacity' });
+          },
+        });
+      }, hero);
+    }).catch(() => {});
+
+    return () => {
+      if (ctx) ctx.revert();
+    };
+  }, []);
+
+  // Fade and scale the hero text as the following section covers the hero.
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const hero = heroRef.current;
+    const content = contentRef.current;
+    const nextSection = hero?.nextElementSibling;
+    if (!hero || !content || !nextSection) return;
+
+    let animationFrame = null;
+    const updateContent = () => {
+      animationFrame = null;
+      const heroRect = hero.getBoundingClientRect();
+      if (heroRect.bottom <= 0) return; // Hero has scrolled completely offscreen
+
+      const viewportHeight = heroRect.height;
+      const covered = viewportHeight - nextSection.getBoundingClientRect().top;
+      const progress = Math.max(0, Math.min(covered / viewportHeight, 1));
+
+      content.style.opacity = String(1 - progress * 0.8);
+      content.style.transform = `scale(${1 - progress * 0.04})`;
+    };
+    const scheduleUpdate = () => {
+      if (animationFrame === null) {
+        animationFrame = window.requestAnimationFrame(updateContent);
+      }
+    };
+
+    updateContent();
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', scheduleUpdate);
+      window.removeEventListener('resize', scheduleUpdate);
+      if (animationFrame !== null) {
+        window.cancelAnimationFrame(animationFrame);
+      }
+      content.style.opacity = '';
+      content.style.transform = '';
+    };
+  }, []);
+
+  const currentTestimonial = HERO_TESTIMONIALS[activeTestimonial];
 
   return (
-    <section
-      id="home"
-      ref={heroRef}
-      className="hero-section"
-      aria-label="Hero Section"
-    >
-      {/* ── Background video (scales on scroll) ── */}
-      <motion.div className="hero-video-wrapper" style={{ scale: videoScale }}>
-        <img
-          className="hero-poster"
-          src="/hero-poster.webp"
-          alt=""
-          width="1280"
-          height="720"
-          fetchPriority="high"
-          decoding="async"
-        />
-        {videoAllowed && (
-          <video
-            ref={videoRef}
-            className="hero-video-bg"
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            poster="/hero-poster.webp"
-            aria-hidden="true"
-          >
-            <source src="/hero.webm" type="video/webm" />
-            <source src="/hero.mp4" type="video/mp4" />
-          </video>
-        )}
+    <section ref={heroRef} className="hero-fullscreen" aria-label="Hero Section">
+      {/* Background Poster */}
+      <img
+        src="/hero-poster.webp"
+        alt=""
+        className="hero-media-bg hero-poster-bg"
+        width="1920"
+        height="1080"
+        fetchPriority="high"
+        decoding="async"
+      />
 
-        <motion.div
-          className="hero-video-overlay"
-          style={{ opacity: overlayOpacity }}
-          aria-hidden="true"
-        />
-        <div className="hero-video-vignette" aria-hidden="true" />
-      </motion.div>
-
-      {/* ── Main content: left text + right visual ── */}
-      <div className="container hero-container">
-        {/* LEFT: text */}
-        <motion.div
-          className="hero-content"
-          style={{ y: textY, opacity: textOpacity }}
-        >
-
-          {/* Headline: word-by-word mask reveal */}
-          <motion.h1
-            className="hero-headline"
-            aria-label="We architect what's next."
-            variants={headlineVariants}
-            initial={shouldReduceMotion ? 'show' : 'hidden'}
-            animate="show"
-          >
-            {HEADLINE_LINES.map((line) => (
-              <span className="hero-headline-line" key={line.words.join('-')} aria-hidden="true">
-                {line.words.map((word) => (
-                  <span className="hero-word-mask" key={word}>
-                    <motion.span
-                      className={`hero-word ${line.gradient ? 'gradient-text' : ''}`}
-                      variants={wordVariants}
-                    >
-                      {word}
-                    </motion.span>
-                  </span>
-                ))}
-              </span>
-            ))}
-          </motion.h1>
-
-          {/* Rotating keyword line */}
-          <motion.div className="hero-rotator" {...anim(0.7)}>
-            <span className="hero-rotator-label">WE BUILD</span>
-            <span className="hero-rotator-arrow" aria-hidden="true">→</span>
-            <span className="hero-rotator-window" aria-live="off">
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={keywordIndex}
-                  className="hero-rotator-word"
-                  initial={shouldReduceMotion ? false : { y: '100%', opacity: 0 }}
-                  animate={{ y: '0%', opacity: 1 }}
-                  exit={{ y: '-100%', opacity: 0 }}
-                  transition={{ duration: 0.45, ease: EASE }}
-                >
-                  {TECH_KEYWORDS[keywordIndex]}
-                </motion.span>
-              </AnimatePresence>
-            </span>
-          </motion.div>
-
-          {/* Sub-copy */}
-          <motion.p className="hero-desc" {...anim(0.85)}>
-            We build digital products, intelligent systems, and scalable technology
-            experiences that help forward-thinking businesses evolve and thrive.
-          </motion.p>
-
-          {/* CTA buttons */}
-          <motion.div className="hero-buttons-row" {...anim(1)}>
-            <SpecularButton
-              variant="primary"
-              size="lg"
-              onClick={(e) => handleAction(e, '#contact')}
-              icon={
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 12h14M13 6l6 6-6 6" />
-                </svg>
-              }
-            >
-              BUILD WITH US
-            </SpecularButton>
-
-            <SpecularButton
-              variant="outline-white"
-              size="lg"
-              onClick={(e) => handleAction(e, '#works')}
-            >
-              EXPLORE OUR WORK
-            </SpecularButton>
-          </motion.div>
-
-          {/* Company info */}
-          <motion.div className="hero-info" {...anim(1.15)}>
-            <div className="hero-info-item">
-              <span className="hero-info-icon" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" />
-                  <circle cx="12" cy="10" r="2.5" />
-                </svg>
-              </span>
-              <span>
-                <span className="hero-info-label">Address</span>
-                <span className="hero-info-value">{COMPANY.address}</span>
-              </span>
-            </div>
-
-            <div className="hero-info-item">
-              <span className="hero-info-icon" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="5" width="18" height="14" rx="2" />
-                  <path d="M3 7l9 6 9-6" />
-                </svg>
-              </span>
-              <span>
-                <span className="hero-info-label">Email</span>
-                <a className="hero-info-value hero-info-link" href={`mailto:${COMPANY.email}`}>
-                  {COMPANY.email}
-                </a>
-              </span>
-            </div>
-          </motion.div>
-        </motion.div>
-
-        {/* RIGHT: orbit visual with floating cards */}
-        <motion.div
-          className="hero-visual"
-          style={{ y: textY, opacity: textOpacity }}
+      {/* Background Video */}
+      {canPlayVideo && (
+        <video
+          ref={videoRef}
+          className="hero-media-bg hero-video-bg"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster="/hero-poster.webp"
           aria-hidden="true"
         >
-          <div className="hero-orbit hero-orbit-outer" />
-          <div className="hero-orbit hero-orbit-inner" />
+          <source src="/hero.webm" type="video/webm" />
+          <source src="/hero.mp4" type="video/mp4" />
+        </video>
+      )}
 
-          <motion.div
-            className="hero-core"
-            initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.6 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.5, ease: EASE }}
-          >
-            <span className="hero-core-glow" />
-            <span className="hero-core-letter">E</span>
-          </motion.div>
+      {/* Dark overlay */}
+      <div className="hero-dark-overlay" aria-hidden="true" />
 
-          {VISUAL_CARDS.map((card, i) => (
-            <motion.div
-              key={card.title}
-              className={`hero-float-card hero-float-card-${i + 1}`}
-              initial={shouldReduceMotion ? false : { opacity: 0, y: 30, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.8 + i * 0.15, ease: EASE }}
+      {/* Main Grid Layout (Left Content + Right Blur Glass Testimonial Card) */}
+      <div className="container hero-container-layout" ref={contentRef}>
+        {/* Left Content Column */}
+        <div className="hero-left-content">
+          <span className="hero-badge-label hero-anim">{COMPANY_NAME}</span>
+          <h1 className="hero-quote-heading hero-anim">{TAGLINE}</h1>
+          <p className="hero-single-subtext hero-anim">
+            Engineering scalable web applications, intelligent systems, and resilient cloud architectures.
+          </p>
+
+          <div className="hero-button-group hero-anim">
+            <Link
+              to="/services"
+              className="btn btn-primary hero-btn"
+              onMouseEnter={() => prefetchChunk('/services')}
+              onFocus={() => prefetchChunk('/services')}
             >
-              <div className="hero-float-inner" style={{ '--float-delay': `${i * 0.8}s` }}>
-                <span className="hero-float-icon">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    {card.icon}
-                  </svg>
-                </span>
-                <span className="hero-float-title">{card.title}</span>
-                <span className="hero-float-dot" />
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
+              Our Services
+            </Link>
+            <Link
+              to="/contact"
+              className="btn btn-outline-light hero-btn"
+              onMouseEnter={() => prefetchChunk('/contact')}
+              onFocus={() => prefetchChunk('/contact')}
+            >
+              Build with Us
+            </Link>
+          </div>
 
-      {/* ── Technology ticker ── */}
-      <div className="hero-ticker-container" aria-hidden="true">
-        <div className="hero-ticker-track hero-ticker-animate">
-          {[...TECH_KEYWORDS, ...TECH_KEYWORDS, ...TECH_KEYWORDS].map(
-            (tech, idx) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <span key={idx} className="hero-ticker-item">
-                <span className="hero-ticker-dot">&bull;</span>
-                {tech}
-              </span>
-            ),
-          )}
+          <div className="hero-contact-row hero-anim">
+            <a href={`mailto:${CONTACT_EMAIL}`} className="hero-contact-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="hero-contact-icon">
+                <rect width="20" height="16" x="2" y="4" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
+              <span>{CONTACT_EMAIL}</span>
+            </a>
+
+            <div className="hero-contact-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="hero-contact-icon">
+                <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              <span>{ADDRESS}</span>
+            </div>
+          </div>
         </div>
-      </div>
 
-      {/* ── Scroll hint ── */}
-      <div className="hero-scroll-hint" aria-hidden="true">
-        <span className="scroll-hint-mouse">
-          <span className="scroll-hint-wheel" />
-        </span>
-        <span className="scroll-hint-label">SCROLL</span>
+        {/* Right Blurred Glassmorphism Card Column */}
+        <div className="hero-right-content hero-anim">
+          <div className="hero-testimonial-card">
+            <div className="hero-testi-top">
+              <span className="hero-testi-badge">Client Impact</span>
+              <span className="hero-testi-metric">{currentTestimonial.metric}</span>
+            </div>
+            
+            <div className="hero-testi-body" key={activeTestimonial}>
+              <p className="hero-testi-quote">"{currentTestimonial.quote}"</p>
+              <div className="hero-testi-author">
+                <span className="hero-testi-line" />
+                <span className="hero-testi-name">{currentTestimonial.client}</span>
+              </div>
+            </div>
+
+            <div className="hero-testi-indicators">
+              {HERO_TESTIMONIALS.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  className={`hero-testi-dot ${idx === activeTestimonial ? 'active' : ''}`}
+                  onClick={() => setActiveTestimonial(idx)}
+                  aria-label={`Show testimonial ${idx + 1}`}
+                  aria-current={idx === activeTestimonial ? 'true' : undefined}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -1,0 +1,59 @@
+/* ═══════════════════════════════════════════════════════════════════
+   EVOLVIA TECH — Reusable Fixed-Ratio Image Component Styles
+   ─────────────────────────────────────────────────────────────────
+   Strict Palette: --bg-alt placeholder, rounded corners, centered fit.
+   Zero stretch, zero layout shift, responsive mobile capping.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.media-frame {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-alt);
+  display: block;
+  margin-inline: auto;
+}
+
+/* ── Suggested Aspect Ratio Presets ───────────────────────────────── */
+.media-frame--banner {
+  aspect-ratio: 21 / 9;
+}
+
+@media (max-width: 768px) {
+  .media-frame--banner {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+.media-frame--card {
+  aspect-ratio: 16 / 10;
+}
+
+.media-frame--team {
+  aspect-ratio: 4 / 5;
+}
+
+.media-frame--gallery {
+  aspect-ratio: 4 / 3;
+}
+
+.media-frame--square {
+  aspect-ratio: 1 / 1;
+}
+
+/* ── Centered Image Fill ─────────────────────────────────────────── */
+.media-frame-img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.media-frame-img--team {
+  object-position: center top;
+}

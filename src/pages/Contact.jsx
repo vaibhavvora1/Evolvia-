@@ -1,24 +1,23 @@
 import React, { useState, useRef } from 'react';
-import PageHero from '../components/UI/PageHero';
-import { IconArrowRight, IconMail, IconMapPin, IconCheck } from '../components/UI/Icons';
+import PageHeader from '../components/UI/PageHeader';
+import DarkBand from '../components/UI/DarkBand';
 import usePageMeta from '../hooks/usePageMeta';
 import useFormSubmit from '../hooks/useFormSubmit';
-import { CONTACT_EMAIL } from '../config/contact';
-import { contactPerks } from '../data/demoData';
+import { CONTACT_EMAIL, ADDRESS, COMPANY_NAME, TAGLINE } from '../config/contact';
+import { contactPerks } from '../data/contactPerks';
 
 const INITIAL_FORM = {
   name: '',
   email: '',
   company: '',
   projectScope: 'Custom Software & Architecture',
-  budget: '$50k - $150k',
   message: '',
 };
 
 export default function Contact() {
   usePageMeta(
-    'Contact Us — Evolvia Tech',
-    'Get in touch with the engineering team at Evolvia Tech for software development, AI systems, and cloud infrastructure consultation.',
+    `Contact Us — Build with ${COMPANY_NAME}`,
+    `Get in touch with the engineering team at ${COMPANY_NAME} for software development, AI systems, and cloud infrastructure consultation.`,
     {
       canonicalUrl: 'https://evolvia.tech/contact',
       ogImage: 'https://evolvia.tech/asset-01.webp',
@@ -63,7 +62,7 @@ export default function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (lockRef.current) return;
+    if (lockRef.current || isSubmitting) return;
 
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
@@ -77,22 +76,21 @@ export default function Contact() {
 
     try {
       await submitForm({
-        subject: `Project Inquiry from ${formData.name}`,
-        fromName: 'Evolvia Website Contact Form',
+        subject: `New Project Inquiry: ${formData.projectScope} — ${formData.name}`,
+        fromName: formData.name,
         replyTo: formData.email,
         fields: {
           Name: formData.name,
           Email: formData.email,
-          Company: formData.company || 'Not specified',
+          Company: formData.company || 'Not provided',
           'Project Scope': formData.projectScope,
-          'Budget Range': formData.budget,
           Message: formData.message,
         },
       });
       setSubmitted(true);
       setFormData(INITIAL_FORM);
-    } catch {
-      setSubmitError('Unable to send message directly. Please write to us at ' + CONTACT_EMAIL);
+    } catch (err) {
+      setSubmitError(err.message || 'Submission failed. Please email us directly.');
     } finally {
       setIsSubmitting(false);
       lockRef.current = false;
@@ -101,190 +99,244 @@ export default function Contact() {
 
   return (
     <div className="contact-page">
-      <PageHero
-        tag="START A CONVERSATION"
-        title="Let's Build Something Dependable Together."
-        subtitle="Discuss your technical roadmap, get an architectural evaluation, or initiate a scoped product sprint with our senior engineering team."
-        image="/asset-01.webp"
-        imageAlt="Contact Evolvia Tech Team"
+      {/* ── Dark PageHeader Band ── */}
+      <PageHeader
+        tag="START A PROJECT"
+        title="Let's Build Software that Evolves with Your Ambition."
+        subtitle={`${TAGLINE}. Share your operational requirements, timeline expectations, or system challenges. We respond with transparent architectural feedback within one business day.`}
       />
 
-      <section className="page-section">
-        <div className="container contact-layout-grid">
-          {/* ── Contact Info & Guarantees ── */}
-          <div className="contact-info-panel">
-            <span className="section-tag">DIRECT ACCESS</span>
-            <h2 className="contact-panel-title">Speak Directly to Technical Founders</h2>
-            <p className="contact-panel-desc">
-              No sales pitches or middle layers. You will speak directly with engineers who will design and deliver your systems.
-            </p>
-
-            <div className="contact-details-box">
-              <div className="contact-detail-row">
-                <IconMail size={20} className="contact-icon" />
-                <div>
-                  <strong>Email Inquiry</strong>
-                  <p><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></p>
-                </div>
-              </div>
-
-              <div className="contact-detail-row">
-                <IconMapPin size={20} className="contact-icon" />
-                <div>
-                  <strong>Engineering Office</strong>
-                  <p>Maninagar, Ahmedabad, Gujarat, India</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="contact-perks-list">
-              <h4>Our Engagement Commitments</h4>
-              {contactPerks.map((perk, i) => (
-                <div key={i} className="contact-perk-item">
-                  <IconCheck size={18} className="perk-check-icon" />
-                  <span>{perk}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* ── Contact Form ── */}
-          <div className="contact-form-panel">
-            <div className="form-card">
-              <h3 className="form-title">Send a Project Brief</h3>
-              <p className="form-subtext">We review and respond to every inquiry within 24 business hours.</p>
+      {/* ── Contact Section Grid ── */}
+      <section className="section">
+        <div className="container">
+          <div className="contact-grid">
+            {/* Form Column */}
+            <div className="contact-form-card">
+              <h2 className="contact-form-title">Send Us a Message</h2>
 
               {submitted ? (
-                <div className="form-success-banner" role="status">
-                  <IconCheck size={28} />
-                  <div>
-                    <h4>Message Received</h4>
-                    <p>Thank you for reaching out. A senior engineer will review your brief and reply promptly.</p>
-                  </div>
+                <div style={{ textAlign: 'center', padding: '32px 16px' }}>
+                  <span
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '48px',
+                      height: '48px',
+                      borderRadius: '50%',
+                      backgroundColor: 'var(--green)',
+                      color: 'var(--black)',
+                      fontSize: '1.5rem',
+                      fontWeight: 800,
+                      marginBottom: '16px',
+                    }}
+                  >
+                    ✓
+                  </span>
+                  <h3 style={{ marginBottom: '12px' }}>Thank you for reaching out!</h3>
+                  <p style={{ color: 'var(--text-muted)', marginBottom: '24px', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                    We have received your message and our technical team will respond to{' '}
+                    <strong>{formData.email || 'your email'}</strong> within one business day.
+                  </p>
                   <button
                     type="button"
                     className="btn btn-outline"
-                    style={{ marginTop: '12px' }}
                     onClick={() => setSubmitted(false)}
                   >
                     Send Another Message
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} noValidate className="contact-form">
+                <form onSubmit={handleSubmit} noValidate>
                   {submitError && (
-                    <div className="form-error-banner" role="alert">
+                    <div className="contact-error-banner" role="alert">
                       {submitError}
                     </div>
                   )}
 
                   <div className="form-group">
-                    <label htmlFor="contact-name">Full Name *</label>
+                    <label htmlFor="contact-name" className="form-label">
+                      Your Name <span style={{ color: 'var(--black)' }}>*</span>
+                    </label>
                     <input
-                      type="text"
                       id="contact-name"
+                      type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="Jane Doe"
-                      className={`form-input ${errors.name ? 'is-invalid' : ''}`}
+                      placeholder="e.g. Alex Morgan"
+                      className="form-input"
                       required
+                      aria-invalid={Boolean(errors.name)}
+                      aria-describedby={errors.name ? 'contact-name-error' : undefined}
                     />
-                    {errors.name && <span className="field-error-text">{errors.name}</span>}
+                    {errors.name && (
+                      <span id="contact-name-error" className="contact-field-error" role="alert">
+                        {errors.name}
+                      </span>
+                    )}
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="contact-email">Email Address *</label>
+                    <label htmlFor="contact-email" className="form-label">
+                      Email Address <span style={{ color: 'var(--black)' }}>*</span>
+                    </label>
                     <input
-                      type="email"
                       id="contact-email"
+                      type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="jane@company.com"
-                      className={`form-input ${errors.email ? 'is-invalid' : ''}`}
+                      placeholder="alex@company.com"
+                      className="form-input"
                       required
+                      aria-invalid={Boolean(errors.email)}
+                      aria-describedby={errors.email ? 'contact-email-error' : undefined}
                     />
-                    {errors.email && <span className="field-error-text">{errors.email}</span>}
+                    {errors.email && (
+                      <span id="contact-email-error" className="contact-field-error" role="alert">
+                        {errors.email}
+                      </span>
+                    )}
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="contact-company">Company / Organization</label>
+                    <label htmlFor="contact-company" className="form-label">
+                      Company / Organization (Optional)
+                    </label>
                     <input
-                      type="text"
                       id="contact-company"
+                      type="text"
                       name="company"
                       value={formData.company}
                       onChange={handleChange}
-                      placeholder="Acme Corp"
+                      placeholder="Acme Inc."
                       className="form-input"
                     />
                   </div>
 
-                  <div className="form-row-2">
-                    <div className="form-group">
-                      <label htmlFor="contact-scope">Project Scope</label>
-                      <select
-                        id="contact-scope"
-                        name="projectScope"
-                        value={formData.projectScope}
-                        onChange={handleChange}
-                        className="form-select"
-                      >
-                        <option value="Custom Software & Architecture">Custom Software & Architecture</option>
-                        <option value="Applied AI & Agents">Applied AI & Agents</option>
-                        <option value="Web & Mobile Application">Web & Mobile Application</option>
-                        <option value="Cloud Infrastructure & DevOps">Cloud Infrastructure & DevOps</option>
-                        <option value="Technical Consultation">Technical Consultation</option>
-                      </select>
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="contact-budget">Estimated Budget</label>
-                      <select
-                        id="contact-budget"
-                        name="budget"
-                        value={formData.budget}
-                        onChange={handleChange}
-                        className="form-select"
-                      >
-                        <option value="< $25k">&lt; $25k</option>
-                        <option value="$25k - $50k">$25k - $50k</option>
-                        <option value="$50k - $150k">$50k - $150k</option>
-                        <option value="$150k+">$150k+</option>
-                      </select>
-                    </div>
+                  <div className="form-group">
+                    <label htmlFor="contact-scope" className="form-label">
+                      Primary Engineering Focus
+                    </label>
+                    <select
+                      id="contact-scope"
+                      name="projectScope"
+                      value={formData.projectScope}
+                      onChange={handleChange}
+                      className="form-select"
+                    >
+                      <option value="Custom Software & Architecture">Custom Software &amp; Architecture</option>
+                      <option value="Applied AI & Workflow Automation">Applied AI &amp; Workflow Automation</option>
+                      <option value="Mobile Application Engineering">Mobile Application Engineering</option>
+                      <option value="Cloud Infrastructure & DevOps">Cloud Infrastructure &amp; DevOps</option>
+                      <option value="UI/UX Engineering & Design Systems">UI/UX Engineering &amp; Design Systems</option>
+                      <option value="Technical Consultation">Technical Consultation &amp; Audit</option>
+                    </select>
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="contact-message">Project Overview &amp; Objectives *</label>
+                    <label htmlFor="contact-message" className="form-label">
+                      Project Details <span style={{ color: 'var(--black)' }}>*</span>
+                    </label>
                     <textarea
                       id="contact-message"
                       name="message"
                       rows={5}
                       value={formData.message}
                       onChange={handleChange}
-                      placeholder="Tell us about the problem you are solving, technical requirements, timeline, etc."
-                      className={`form-textarea ${errors.message ? 'is-invalid' : ''}`}
+                      placeholder="Tell us about your system goals, current stack, timeline, or key technical challenges..."
+                      className="form-textarea"
                       required
+                      aria-invalid={Boolean(errors.message)}
+                      aria-describedby={errors.message ? 'contact-message-error' : undefined}
                     />
-                    {errors.message && <span className="field-error-text">{errors.message}</span>}
+                    {errors.message && (
+                      <span id="contact-message-error" className="contact-field-error" role="alert">
+                        {errors.message}
+                      </span>
+                    )}
                   </div>
 
                   <button
                     type="submit"
-                    className="btn btn-primary btn-block"
+                    className="btn btn-submit contact-submit-btn"
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? 'Sending Brief...' : 'Send Project Brief'}
-                    {!isSubmitting && <IconArrowRight size={16} />}
+                    {isSubmitting ? 'Sending Transmission...' : 'Build with Us →'}
                   </button>
                 </form>
+              )}
+            </div>
+
+            {/* Direct Info & Perks Column */}
+            <div className="contact-info-column">
+              <div
+                style={{
+                  backgroundColor: 'var(--card)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '32px',
+                }}
+              >
+                <h3 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>Direct Coordinates</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', fontSize: '0.95rem' }}>
+                  <div>
+                    <span style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                      Inquiries &amp; RFPs
+                    </span>
+                    <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: 'var(--black)', fontWeight: 700 }}>
+                      {CONTACT_EMAIL}
+                    </a>
+                  </div>
+                  <div>
+                    <span style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                      Studio Location
+                    </span>
+                    <span style={{ color: 'var(--black)', fontWeight: 600 }}>{ADDRESS}</span>
+                  </div>
+                  <div>
+                    <span style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                      Response Window
+                    </span>
+                    <span style={{ color: 'var(--text-muted)' }}>Within 24 business hours</span>
+                  </div>
+                </div>
+              </div>
+
+              {contactPerks && contactPerks.length > 0 && (
+                <div
+                  style={{
+                    backgroundColor: 'var(--card)',
+                    border: '1px solid var(--border)',
+                    borderRadius: 'var(--radius-md)',
+                    padding: '32px',
+                  }}
+                >
+                  <h3 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>What to Expect</h3>
+                  <ul className="detail-checklist">
+                    {contactPerks.map((perk) => (
+                      <li key={perk} className="detail-checklist-item" style={{ fontSize: '0.925rem' }}>
+                        {perk}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
             </div>
           </div>
         </div>
       </section>
+
+      {/* ── Single Dark Accent Section: DarkBand CTA ── */}
+      <div className="section-lazy">
+        <DarkBand
+          tag="TRANSPARENT COLLABORATION"
+          title="Direct Access to Engineering Leadership"
+          description="No account managers or sales intermediaries. Your inquiry is reviewed by practicing software architects who build production platforms."
+          showContact={true}
+        />
+      </div>
     </div>
   );
 }

@@ -1,39 +1,53 @@
-import React, { Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
+/**
+ * Layout.jsx
+ * ──────────
+ * Shell for all routes. Mounts Lenis smooth-scroll ONCE here.
+ * The lenisRef is stored in a module-level context so ScrollToTop
+ * and hash-link navigation can call lenis.scrollTo().
+ *
+ * Page transitions use an opacity-only fade with no transform
+ * so sticky and fixed elements keep working reliably.
+ */
+import React, { Suspense, createContext, useContext } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import ScrollToTop from '../ScrollToTop/ScrollToTop';
-import CookieConsent from '../CookieConsent/CookieConsent';
+import useLenis from '../../hooks/useLenis';
 
-function PageSkeleton() {
+function PageLoader() {
   return (
-    <div className="page-skeleton-container" aria-label="Loading page">
-      <div className="skeleton-hero" />
-      <div className="container skeleton-body">
-        <div className="skeleton-line" style={{ width: '40%', height: '28px', marginBottom: '24px' }} />
-        <div className="skeleton-grid">
-          <div className="skeleton-card" />
-          <div className="skeleton-card" />
-          <div className="skeleton-card" />
-          <div className="skeleton-card" />
-        </div>
-      </div>
+    <div className="skeleton-loader" aria-label="Loading content">
+      <div className="skeleton-spinner" />
     </div>
   );
 }
 
+/** Context so any child can read the lenis ref if needed */
+export const LenisContext = createContext(null);
+
+export function useLenisInstance() {
+  return useContext(LenisContext);
+}
+
 export default function Layout() {
+  const lenisRef = useLenis();
+  const location = useLocation();
+
   return (
-    <div className="site-wrapper">
-      <ScrollToTop />
-      <Navbar />
-      <main id="main-content" className="site-main">
-        <Suspense fallback={<PageSkeleton />}>
-          <Outlet />
-        </Suspense>
-      </main>
-      <Footer />
-      <CookieConsent />
-    </div>
+    <LenisContext.Provider value={lenisRef}>
+      <div className="site-wrapper">
+        <ScrollToTop lenisRef={lenisRef} />
+        <Navbar />
+        <main id="main-content" className="site-main">
+          <Suspense fallback={<PageLoader />}>
+            <div key={location.pathname} className="page-fade-enter">
+              <Outlet />
+            </div>
+          </Suspense>
+        </main>
+        <Footer />
+      </div>
+    </LenisContext.Provider>
   );
 }

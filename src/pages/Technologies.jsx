@@ -1,116 +1,154 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import PageHero from '../components/UI/PageHero';
-import HoverCard from '../components/UI/HoverCard';
-import { IconArrowRight } from '../components/UI/Icons';
+import React, { useState, useMemo } from 'react';
+import PageHeader from '../components/UI/PageHeader';
+import DarkBand from '../components/UI/DarkBand';
+import TechLogo from '../components/Technology/TechLogo';
+import TechMarquee from '../components/Technology/TechMarquee';
 import usePageMeta from '../hooks/usePageMeta';
-import useReveal from '../hooks/useReveal';
 import technologies from '../data/technologies';
 
-const CATEGORIES = ['All', 'Frontend', 'Backend', 'Database', 'Cloud', 'DevOps', 'AI', 'Mobile'];
+const CATEGORIES = [
+  'All',
+  'Frontend',
+  'Backend',
+  'Databases',
+  'DevOps and Cloud',
+  'Tools',
+  'AI',
+];
 
 export default function Technologies() {
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
+
   usePageMeta(
-    'Technologies & Engineering Stack — Evolvia Tech',
-    'Explore the modern, resilient programming languages, frameworks, cloud tooling, and AI libraries powering Evolvia Tech solutions.',
+    'Core Technology Stack — Evolvia Tech',
+    'Explore the battle-tested technologies, frameworks, and cloud platforms powering Evolvia Tech engineering solutions.',
     {
-      canonicalUrl: 'https://evolvia.tech/technologies',
+      canonicalUrl: 'https://evolvia.tech/technology',
       ogImage: 'https://evolvia.tech/asset-21.webp',
     }
   );
 
-  const [activeCategory, setActiveCategory] = useState('All');
-  const gridRef = useReveal();
+  const filteredTechnologies = useMemo(() => {
+    return (technologies || []).filter((tech) => {
+      const matchesCategory =
+        activeCategory === 'All' || tech.category === activeCategory;
 
-  const filteredTech = activeCategory === 'All'
-    ? technologies
-    : technologies.filter((t) => t.category === activeCategory || t.groups?.includes(activeCategory));
+      const matchesSearch =
+        !searchQuery ||
+        tech.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        tech.description.toLowerCase().includes(searchQuery.toLowerCase());
+
+      return matchesCategory && matchesSearch;
+    });
+  }, [activeCategory, searchQuery]);
 
   return (
     <div className="technologies-page">
-      <PageHero
-        tag="ENGINEERING STACK"
-        title="Modern, Battle-Tested Engineering Tools &amp; Runtimes."
-        subtitle="We build with dependable, type-safe, and high-throughput foundations. From compiled systems and cloud orchestration to reactive web frontends and multimodal inference."
-        image="/asset-21.webp"
-        imageAlt="Evolvia Tech Technologies Stack"
-        actions={
-          <Link to="/contact" className="btn btn-primary">
-            Inquire About Your Stack <IconArrowRight size={16} />
-          </Link>
-        }
+      {/* ── Dark PageHeader Band ── */}
+      <PageHeader
+        tag="TECHNOLOGY DIRECTORY"
+        title="Battle-Tested Technologies Engineered for Production."
+        subtitle="We select tools for system reliability, typing rigor, and operational longevity. Explore each technology in our stack and how we use it to build robust platforms."
       />
 
-      {/* ── Filter Pills & Cards Grid ── */}
-      <section className="page-section reveal-item" ref={gridRef}>
+      {/* ── Technology Marquee Strip ── */}
+      <section style={{ padding: '24px 0', backgroundColor: 'var(--bg-alt)' }}>
+        <TechMarquee technologies={technologies} />
+      </section>
+
+      {/* ── Filter Bar & Controls ── */}
+      <section className="section section-alt" style={{ padding: '36px 0' }}>
         <div className="container">
-          <div className="section-header-compact">
-            <span className="section-tag">TECHNOLOGY ECOSYSTEM</span>
-            <h2 className="section-title-compact">Explore by Domain &amp; Layer</h2>
-            <p className="section-lead-compact">
-              Each technology is chosen for developer ergonomics, fault isolation, and long-term community stewardship.
-            </p>
-          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '10px',
+              }}
+              role="group"
+              aria-label="Category filters"
+            >
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setActiveCategory(cat)}
+                  style={{
+                    padding: '8px 18px',
+                    borderRadius: 'var(--radius-pill)',
+                    border: '1px solid var(--border)',
+                    backgroundColor: activeCategory === cat ? 'var(--black)' : 'var(--card)',
+                    color: activeCategory === cat ? 'var(--green)' : 'var(--black)',
+                    fontWeight: activeCategory === cat ? 700 : 500,
+                    cursor: 'pointer',
+                    fontSize: '0.875rem',
+                    transition: 'background-color 0.25s ease, color 0.25s ease',
+                  }}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
 
-          {/* Filter Pills */}
-          <div className="filter-pills-row" role="tablist" aria-label="Filter technologies by category">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                className={`filter-pill ${activeCategory === cat ? 'is-active' : ''}`}
-                onClick={() => setActiveCategory(cat)}
-                role="tab"
-                aria-selected={activeCategory === cat}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          {/* Compact Hover Cards */}
-          <div className="compact-cards-grid">
-            {filteredTech.map((tech) => (
-              <HoverCard
-                key={tech.slug}
-                title={tech.name}
-                tag={`${tech.category} &bull; ${tech.level}`}
-                description={tech.description}
-                actionText="Tech specifications"
+            <div style={{ width: '100%', maxWidth: '360px' }}>
+              <input
+                type="text"
+                placeholder="Search technologies..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="form-input"
+                aria-label="Filter technologies"
               />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Technologies Grid ── */}
+      <section className="section">
+        <div className="container">
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
+              gap: '20px',
+            }}
+          >
+            {filteredTechnologies.map((tech) => (
+              <TechLogo key={tech.slug} technology={tech} />
             ))}
           </div>
+
+          {filteredTechnologies.length === 0 && (
+            <div style={{ textAlign: 'center', padding: '48px 0', color: 'var(--text-muted)' }}>
+              <p>No technologies matched your filter criteria.</p>
+              <button
+                type="button"
+                className="btn btn-outline"
+                onClick={() => {
+                  setActiveCategory('All');
+                  setSearchQuery('');
+                }}
+                style={{ marginTop: '12px' }}
+              >
+                Reset Filters
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* ── Architecture Best Practices ── */}
-      <section className="page-section bg-alt">
-        <div className="container quality-callout-grid">
-          <div className="quality-item">
-            <h3>Type Safety &amp; Clean Contracts</h3>
-            <p>Strict schema validations, OpenAPI contracts, and typed clients ensure reliable data handoffs between services.</p>
-          </div>
-          <div className="quality-item">
-            <h3>Observability &amp; Telemetry</h3>
-            <p>Every service includes health checks, structured JSON logs, and Prometheus metrics out of the box.</p>
-          </div>
-          <div className="quality-item">
-            <h3>Containerized Portability</h3>
-            <p>Uniform Docker and Kubernetes container specifications eliminate environment divergence from local dev to cloud production.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Final CTA ── */}
-      <section className="page-section">
-        <div className="container cta-banner-card">
-          <h2>Have custom framework or migration requirements?</h2>
-          <p>Our team assesses legacy systems and designs incremental modernization paths without service downtime.</p>
-          <Link to="/contact" className="btn btn-primary">
-            Discuss Your Migration <IconArrowRight size={16} />
-          </Link>
-        </div>
-      </section>
+      {/* ── Single Dark Accent Section: DarkBand CTA ── */}
+      <DarkBand
+        tag="ARCHITECT YOUR STACK"
+        title="Need Guidance Choosing the Right Stack?"
+        description="We help teams evaluate trade-offs and select frameworks that optimize developer ergonomics, scalability, and uptime."
+        primaryActionText="Build with Us"
+        primaryActionTo="/contact"
+        showContact={true}
+      />
     </div>
   );
 }

@@ -6,11 +6,19 @@ import Layout from './components/Layout/Layout';
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
 const Services = lazy(() => import('./pages/Services'));
-const Portfolio = lazy(() => import('./pages/Portfolio'));
+const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
+const Works = lazy(() => import('./pages/Works'));
+const WorkDetail = lazy(() => import('./pages/WorkDetail'));
 const Technologies = lazy(() => import('./pages/Technologies'));
-const Contact = lazy(() => import('./pages/Contact'));
-const Careers = lazy(() => import('./pages/Careers'));
+const TechnologyDetail = lazy(() => import('./pages/TechnologyDetail'));
+const Team = lazy(() => import('./pages/Team'));
+const TeamDetail = lazy(() => import('./pages/TeamDetail'));
 const Blog = lazy(() => import('./pages/Blog'));
+const BlogDetail = lazy(() => import('./pages/BlogDetail'));
+const Careers = lazy(() => import('./pages/Careers'));
+const CareerDetail = lazy(() => import('./pages/CareerDetail'));
+const ApplyForm = lazy(() => import('./pages/ApplyForm'));
+const Contact = lazy(() => import('./pages/Contact'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./pages/TermsOfService'));
 const CookiePolicy = lazy(() => import('./pages/CookiePolicy'));
@@ -24,26 +32,32 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/services" element={<Services />} />
-        <Route path="/portfolio" element={<Portfolio />} />
-        <Route path="/technologies" element={<Technologies />} />
+        <Route path="/services/:slug" element={<ServiceDetail />} />
+        <Route path="/works" element={<Works />} />
+        <Route path="/works/:slug" element={<WorkDetail />} />
+        <Route path="/technology" element={<Technologies />} />
+        <Route path="/technology/:slug" element={<TechnologyDetail />} />
+        <Route path="/team" element={<Team />} />
+        <Route path="/team/:slug" element={<TeamDetail />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogDetail />} />
+        <Route path="/careers" element={<Careers />} />
+        <Route path="/careers/:slug" element={<CareerDetail />} />
+        <Route path="/careers/:slug/apply" element={<ApplyForm />} />
         <Route path="/contact" element={<Contact />} />
 
-        {/* Secondary Routes */}
-        <Route path="/careers" element={<Careers />} />
-        <Route path="/blog" element={<Blog />} />
+        {/* Legal Routes */}
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />
         <Route path="/cookie-policy" element={<CookiePolicy />} />
 
-        {/* Route Aliases & Legacy Redirects */}
-        <Route path="/works" element={<Navigate to="/portfolio" replace />} />
-        <Route path="/works/*" element={<Navigate to="/portfolio" replace />} />
-        <Route path="/portfolio/*" element={<Navigate to="/portfolio" replace />} />
-        <Route path="/technology" element={<Navigate to="/technologies" replace />} />
-        <Route path="/technology/*" element={<Navigate to="/technologies" replace />} />
-        <Route path="/services/*" element={<Navigate to="/services" replace />} />
-        <Route path="/careers/*" element={<Navigate to="/careers" replace />} />
-        <Route path="/blog/*" element={<Navigate to="/blog" replace />} />
+        {/* Route Aliases for Backwards Compatibility */}
+        <Route path="/portfolio" element={<Navigate to="/works" replace />} />
+        <Route path="/portfolio/:slug" element={<WorkDetail />} />
+        <Route path="/technologies" element={<Navigate to="/technology" replace />} />
+        <Route path="/technologies/:slug" element={<TechnologyDetail />} />
+        <Route path="/our-team" element={<Navigate to="/team" replace />} />
+        <Route path="/our-works" element={<Navigate to="/works" replace />} />
         <Route path="/privacy" element={<Navigate to="/privacy-policy" replace />} />
         <Route path="/terms" element={<Navigate to="/terms-of-service" replace />} />
 

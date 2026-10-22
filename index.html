@@ -14,18 +14,50 @@
     <meta property="og:site_name" content="Evolvia Tech" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://evolvia.tech/" />
-    <meta property="og:title" content="Evolvia Tech — Software, AI & Cloud Engineering" />
+    <meta property="og:title" content="Evolvia Tech — Software, AI &amp; Cloud Engineering" />
     <meta property="og:description" content="Digital products, intelligent systems, and dependable cloud engineering. Based in Ahmedabad, India." />
     <meta property="og:image" content="https://evolvia.tech/hero-poster.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Evolvia Tech — Software, AI & Cloud Engineering" />
+    <meta name="twitter:title" content="Evolvia Tech — Software, AI &amp; Cloud Engineering" />
     <meta name="twitter:description" content="Digital products, intelligent systems, and dependable cloud engineering." />
     <meta name="twitter:image" content="https://evolvia.tech/hero-poster.webp" />
-    <title>Evolvia Tech — Software, AI & Cloud Engineering</title>
+    <title>Evolvia Tech — Software, AI &amp; Cloud Engineering</title>
+
+    <!--
+      Preload the hero background poster — only matters on the Home route,
+      but the negligible HTTP/2 push cost on other routes is acceptable.
+    -->
+    <link rel="preload" as="image" href="/hero-poster.webp" type="image/webp" fetchpriority="high" />
+
+    <!-- DNS/TCP preconnect to font origins -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400&family=Sora:wght@600;700&display=swap" />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400&family=Sora:wght@600;700&display=swap" rel="stylesheet" />
+
+    <!--
+      Non-render-blocking font load:
+      Load the Google Fonts CSS as a print stylesheet so the browser never
+      waits for it before painting. The onload handler switches it to "all"
+      once the network response is ready, so fonts swap in without a flash.
+      The <noscript> tag provides a synchronous fallback for no-JS agents.
+      This is the single highest-impact fix for FCP on every inner page
+      including /contact, where the <h1> is the LCP element.
+    -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600&display=swap"
+      />
+    </noscript>
+
+    <!-- DNS prefetch for the form submission API used on /contact -->
+    <link rel="dns-prefetch" href="https://api.web3forms.com" />
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",

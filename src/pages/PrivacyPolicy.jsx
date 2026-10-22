@@ -1,6 +1,8 @@
 import React from 'react';
-import PageHero from '../components/UI/PageHero';
+import PageHeader from '../components/UI/PageHeader';
+import DarkBand from '../components/UI/DarkBand';
 import usePageMeta from '../hooks/usePageMeta';
+import './LegalPage.css';
 
 export default function PrivacyPolicy() {
   usePageMeta(
@@ -11,13 +13,13 @@ export default function PrivacyPolicy() {
 
   return (
     <div className="legal-page">
-      <PageHero
+      <PageHeader
         tag="LEGAL & TRANSPARENCY"
         title="Privacy Policy"
         subtitle="Last updated: October 2026. This policy explains how Evolvia Tech handles personal information."
       />
 
-      <section className="page-section">
+      <section className="page-section section-lazy">
         <div className="container legal-content-card">
           <h2>1. Information We Collect</h2>
           <p>
@@ -46,6 +48,14 @@ export default function PrivacyPolicy() {
           </p>
         </div>
       </section>
+
+      <DarkBand
+        tag="SECURITY & TRUST"
+        title="Committed to Data Privacy"
+        description="Have questions about how your data is processed or need a custom DPA? Reach out to our team."
+        primaryActionText="Contact Privacy Team"
+        primaryActionTo="/contact"
+      />
     </div>
   );
 }

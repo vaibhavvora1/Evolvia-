@@ -1,0 +1,69 @@
+/* ═══════════════════════════════════════════════════════════════════
+   EVOLVIA TECH — About Page Styles
+   ─────────────────────────────────────────────────────────────────
+   Team cards: identical, centered 4/5 photo frames.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Team cards: identical, centered 4/5 photo frames ─────────────── */
+.about-team-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
+}
+
+.about-team-grid > .evolvia-card-link,
+.about-team-grid > .evolvia-card-wrapper {
+  width: 280px;
+  max-width: 100%;
+}
+
+/* Size the wrapper (Card's .evolvia-card-media), not the <img> */
+.about-team-grid .evolvia-card-media {
+  width: calc(100% - 48px) !important;
+  height: auto !important;
+  aspect-ratio: 4 / 5 !important;
+  margin: 24px auto 0;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: 0 16px 36px rgba(17, 17, 17, 0.06);
+}
+
+.about-team-grid .evolvia-card-media img,
+.about-team-grid .evolvia-card-img {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: auto !important;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* Center the text under the photo */
+.about-team-grid .evolvia-card-body {
+  align-items: center;
+  text-align: center;
+}
+
+.about-team-grid .evolvia-card-meta {
+  justify-content: center;
+}
+
+.about-team-grid .evolvia-card-action {
+  justify-content: center;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .about-team-grid {
+    gap: 24px;
+  }
+
+  .about-team-grid > .evolvia-card-link,
+  .about-team-grid > .evolvia-card-wrapper {
+    width: 100%;
+    max-width: 320px;
+  }
+}

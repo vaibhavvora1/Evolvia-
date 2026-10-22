@@ -1,6 +1,8 @@
 import React from 'react';
-import PageHero from '../components/UI/PageHero';
+import PageHeader from '../components/UI/PageHeader';
+import DarkBand from '../components/UI/DarkBand';
 import usePageMeta from '../hooks/usePageMeta';
+import './LegalPage.css';
 
 export default function CookiePolicy() {
   usePageMeta(
@@ -11,13 +13,13 @@ export default function CookiePolicy() {
 
   return (
     <div className="legal-page">
-      <PageHero
+      <PageHeader
         tag="LEGAL & TRANSPARENCY"
         title="Cookie Policy"
         subtitle="Last updated: October 2026. Review our storage and tracking policies."
       />
 
-      <section className="page-section">
+      <section className="page-section section-lazy">
         <div className="container legal-content-card">
           <h2>1. What Are Cookies?</h2>
           <p>
@@ -35,6 +37,14 @@ export default function CookiePolicy() {
           </p>
         </div>
       </section>
+
+      <DarkBand
+        tag="CONSENT PREFERENCES"
+        title="Control Your Digital Footprint"
+        description="We prioritize user privacy and ensure zero tracking without explicit authorization."
+        primaryActionText="Get in Touch"
+        primaryActionTo="/contact"
+      />
     </div>
   );
 }

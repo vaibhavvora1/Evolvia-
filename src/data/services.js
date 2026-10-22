@@ -1,1 +1,1 @@
-export { services as SERVICES_DATA } from './demoData';
+export { services, services as SERVICES_DATA, aiServices } from './demoData.js';
