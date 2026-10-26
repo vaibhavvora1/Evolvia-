@@ -20,7 +20,7 @@ export const SOCIAL_LINKS = [
   {
     id: "instagram",
     label: "Instagram",
-    url: "https://www.linkedin.com/in/vaibhav-vora-b848b0375",
+    url: "https://www.instagram.com/ivaibhavvora/",
   },
 ];
 
