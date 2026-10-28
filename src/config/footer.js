@@ -3,8 +3,8 @@ export const FOOTER_INFO = {
   legalName: "Evolvia Infotech", // e.g. registered company name, if different from brand
   phone: "8153875076", // e.g. '+91 XXXXX XXXXX'
   businessHours: "10 AM to 5 PM", // e.g. 'Mon – Sat, 10:00 – 19:00 IST'
-  registrationNumber: "U00000GJ2026PTC000000", // CIN / LLPIN / registration no.
-  gstNumber: "24AAAAA0000A1Z5", // GSTIN
+  registrationNumber: "", // Add a verified CIN / LLPIN / registration number.
+  gstNumber: "", // Add a verified GSTIN.
   workModel: "Remote-first engineering team",
 };
 

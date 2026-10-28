@@ -417,7 +417,7 @@ export default function ApplyForm() {
         <div className="container">
           <div className="apply-card">
             {submitted ? (
-              <div className="apply-success-state">
+              <div className="apply-success-state" role="status" aria-live="polite">
                 <span className="apply-success-icon" aria-hidden="true">✓</span>
                 <h2>Application Submitted Successfully!</h2>
                 <p>

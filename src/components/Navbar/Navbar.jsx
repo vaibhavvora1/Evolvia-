@@ -3,7 +3,7 @@ import { NavLink, Link, useLocation } from 'react-router-dom';
 import { NAV_LINKS } from '../../data/navigation';
 import { prefetchChunk } from '../../utils/prefetch';
 import { CONTACT_EMAIL, ADDRESS } from '../../config/contact';
-import { useLenisInstance } from '../Layout/Layout';
+import { useLenisInstance } from '../../context/LenisContext';
 import './Navbar.css';
 
 export default function Navbar() {
@@ -12,7 +12,7 @@ export default function Navbar() {
     () => typeof window !== 'undefined' && window.scrollY > 60,
   );
   const [hidden, setHidden] = useState(false);
-  
+
   const location = useLocation();
   const lastScrollY = useRef(0);
   const toggleButtonRef = useRef(null);
@@ -20,9 +20,16 @@ export default function Navbar() {
   const wasOpenRef = useRef(false);
   const prevPathnameRef = useRef(location.pathname);
   const menuOpenRef = useRef(menuOpen);
-  menuOpenRef.current = menuOpen;
   const isHome = location.pathname === '/';
   const lenisRef = useLenisInstance();
+
+  const updateMenuOpen = (nextState) => {
+    const nextValue = typeof nextState === 'function'
+      ? nextState(menuOpenRef.current)
+      : nextState;
+    menuOpenRef.current = nextValue;
+    setMenuOpen(nextValue);
+  };
 
   // Scroll listener for 60px threshold & hide-on-scroll-down / show-on-scroll-up
   useEffect(() => {
@@ -60,25 +67,30 @@ export default function Navbar() {
     };
   }, []);
 
-  // Reset scroll state and close drawer on route change
+  // Close the drawer when browser history navigation changes the route.
   useEffect(() => {
-    setScrolled(window.scrollY > 60);
-    setHidden(false);
-    setMenuOpen(false);
-  }, [location.pathname]);
+    const closeMenu = () => {
+      menuOpenRef.current = false;
+      setMenuOpen(false);
+    };
+
+    window.addEventListener('popstate', closeMenu);
+    return () => window.removeEventListener('popstate', closeMenu);
+  }, []);
 
   // Stop/Start Lenis when mobile menu opens/closes + lock body scroll
   useEffect(() => {
+    const lenis = lenisRef?.current;
     if (menuOpen) {
       document.body.style.overflow = 'hidden';
-      lenisRef?.current?.stop();
+      lenis?.stop();
     } else {
       document.body.style.overflow = '';
-      lenisRef?.current?.start();
+      lenis?.start();
     }
     return () => {
       document.body.style.overflow = '';
-      lenisRef?.current?.start();
+      lenis?.start();
     };
   }, [menuOpen, lenisRef]);
 
@@ -149,7 +161,7 @@ export default function Navbar() {
           to="/"
           className="navbar-brand"
           aria-label="Evolvia Tech Home"
-          onClick={() => setMenuOpen(false)}
+          onClick={() => updateMenuOpen(false)}
         >
           <img
             src="/logo-navbar.webp"
@@ -174,6 +186,7 @@ export default function Navbar() {
               }
               onMouseEnter={() => prefetchChunk(link.path)}
               onFocus={() => prefetchChunk(link.path)}
+              onClick={() => updateMenuOpen(false)}
             >
               <span className="nav-link-text">{link.label}</span>
             </NavLink>
@@ -187,6 +200,7 @@ export default function Navbar() {
             className="btn btn-primary navbar-cta"
             onMouseEnter={() => prefetchChunk('/contact')}
             onFocus={() => prefetchChunk('/contact')}
+            onClick={() => updateMenuOpen(false)}
           >
             Build with Us
           </Link>
@@ -198,7 +212,7 @@ export default function Navbar() {
             aria-expanded={menuOpen}
             aria-controls="mobile-drawer"
             aria-label={menuOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
-            onClick={() => setMenuOpen((prev) => !prev)}
+            onClick={() => updateMenuOpen((prev) => !prev)}
           >
             <span className={`hamburger-bar ${menuOpen ? 'open' : ''}`} />
           </button>
@@ -210,6 +224,9 @@ export default function Navbar() {
         id="mobile-drawer"
         ref={drawerRef}
         className={`mobile-drawer ${menuOpen ? 'is-open' : ''}`}
+        role="dialog"
+        aria-label="Mobile navigation"
+        aria-modal={menuOpen ? 'true' : undefined}
         aria-hidden={!menuOpen}
         inert={!menuOpen ? true : undefined}
         data-lenis-prevent
@@ -224,7 +241,7 @@ export default function Navbar() {
                 className={({ isActive }) =>
                   `mobile-nav-link ${isActive ? 'is-active' : ''}`
                 }
-                onClick={() => setMenuOpen(false)}
+                onClick={() => updateMenuOpen(false)}
                 onMouseEnter={() => prefetchChunk(link.path)}
               >
                 {link.label}
@@ -236,7 +253,7 @@ export default function Navbar() {
             <Link
               to="/contact"
               className="btn btn-primary btn-block"
-              onClick={() => setMenuOpen(false)}
+              onClick={() => updateMenuOpen(false)}
             >
               Build with Us
             </Link>

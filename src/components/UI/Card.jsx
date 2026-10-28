@@ -83,14 +83,3 @@ export default function Card({
     </div>
   );
 }
-
-export function PointsList({ items = [], className = 'point-list' }) {
-  if (!items.length) return null;
-  return (
-    <ul className={className}>
-      {items.map((item) => (
-        <li key={item}>{item}</li>
-      ))}
-    </ul>
-  );
-}

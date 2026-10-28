@@ -1,9 +1,8 @@
 /**
  * src/data/contactPerks.js
  * ─────────────────────────
- * Tiny standalone module for the Contact page sidebar perks list.
- * Isolated here so Contact.jsx does NOT import the full 67 KB demoData.js
- * monolith, keeping the /contact lazy chunk as small as possible.
+ * Standalone Contact page sidebar perks list, kept separate from page content
+ * modules so it only loads with the Contact page.
  */
 export const contactPerks = [
   'Work directly with engineering founders',

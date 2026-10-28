@@ -26,26 +26,18 @@ const ROUTE_CHUNK_IMPORTS = {
 export function prefetchChunk(path) {
   if (!path) return;
 
-  // Direct exact match
-  if (ROUTE_CHUNK_IMPORTS[path]) {
-    try {
-      ROUTE_CHUNK_IMPORTS[path]();
-      return;
-    } catch {
-      // Ignored
-    }
-  }
+  let loadChunk = ROUTE_CHUNK_IMPORTS[path];
 
   // Prefix matching for dynamic detail routes
-  try {
-    if (path.includes('/careers/') && path.endsWith('/apply')) ROUTE_CHUNK_IMPORTS['/careers/apply']?.();
-    else if (path.startsWith('/services/')) ROUTE_CHUNK_IMPORTS['/services/detail']?.();
-    else if (path.startsWith('/works/') || path.startsWith('/portfolio/')) ROUTE_CHUNK_IMPORTS['/works/detail']?.();
-    else if (path.startsWith('/technology/') || path.startsWith('/technologies/')) ROUTE_CHUNK_IMPORTS['/technology/detail']?.();
-    else if (path.startsWith('/team/')) ROUTE_CHUNK_IMPORTS['/team/detail']?.();
-    else if (path.startsWith('/blog/')) ROUTE_CHUNK_IMPORTS['/blog/detail']?.();
-    else if (path.startsWith('/careers/')) ROUTE_CHUNK_IMPORTS['/careers/detail']?.();
-  } catch {
-    // Ignored
+  if (!loadChunk) {
+    if (path.includes('/careers/') && path.endsWith('/apply')) loadChunk = ROUTE_CHUNK_IMPORTS['/careers/apply'];
+    else if (path.startsWith('/services/')) loadChunk = ROUTE_CHUNK_IMPORTS['/services/detail'];
+    else if (path.startsWith('/works/') || path.startsWith('/portfolio/')) loadChunk = ROUTE_CHUNK_IMPORTS['/works/detail'];
+    else if (path.startsWith('/technology/') || path.startsWith('/technologies/')) loadChunk = ROUTE_CHUNK_IMPORTS['/technology/detail'];
+    else if (path.startsWith('/team/')) loadChunk = ROUTE_CHUNK_IMPORTS['/team/detail'];
+    else if (path.startsWith('/blog/')) loadChunk = ROUTE_CHUNK_IMPORTS['/blog/detail'];
+    else if (path.startsWith('/careers/')) loadChunk = ROUTE_CHUNK_IMPORTS['/careers/detail'];
   }
+
+  loadChunk?.().catch(() => {});
 }

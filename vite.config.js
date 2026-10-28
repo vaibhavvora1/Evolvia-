@@ -14,15 +14,7 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           const moduleId = id.replaceAll('\\', '/');
-          if (!moduleId.includes('/node_modules/')) {
-            // Keep the large demoData monolith in a single shared chunk so it
-            // is not duplicated across every page that imports from it via the
-            // thin re-export wrappers (services.js, projects.js, etc.).
-            if (moduleId.includes('/src/data/demoData')) {
-              return 'app-data';
-            }
-            return undefined;
-          }
+          if (!moduleId.includes('/node_modules/')) return undefined;
 
           // React core and Router — loaded in react-vendor
           if (/\/(react|react-dom|react-router|react-router-dom|scheduler)\//.test(moduleId)) {

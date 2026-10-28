@@ -33,7 +33,8 @@ export default function Hero() {
   // ── Cycle testimonials every 4.5 seconds only when visible & desktop ──
   useEffect(() => {
     const isSmall = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
-    if (isSmall) return undefined;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isSmall || prefersReducedMotion) return undefined;
 
     let timer = null;
     const hero = heroRef.current;
@@ -70,7 +71,6 @@ export default function Hero() {
     const isSmallMobile = window.matchMedia('(max-width: 640px)').matches;
 
     if (prefersReducedMotion || saveData || isSmallMobile) {
-      setCanPlayVideo(false);
       return undefined;
     }
 

@@ -9,12 +9,6 @@ export const NAV_LINKS = [
   { label: 'Our Team', path: '/team' },
 ];
 
-export const SECONDARY_NAV_LINKS = [
-  { label: 'Careers', path: '/careers' },
-  { label: 'Blog', path: '/blog' },
-  { label: 'Our Team', path: '/team' },
-];
-
 export const LEGAL_LINKS = [
   { label: 'Privacy Policy', path: '/privacy-policy' },
   { label: 'Cookie Policy', path: '/cookie-policy' },

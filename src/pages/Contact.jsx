@@ -115,7 +115,11 @@ export default function Contact() {
               <h2 className="contact-form-title">Send Us a Message</h2>
 
               {submitted ? (
-                <div style={{ textAlign: 'center', padding: '32px 16px' }}>
+                <div
+                  role="status"
+                  aria-live="polite"
+                  style={{ textAlign: 'center', padding: '32px 16px' }}
+                >
                   <span
                     style={{
                       display: 'inline-flex',

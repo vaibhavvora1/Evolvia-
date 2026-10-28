@@ -4,8 +4,10 @@ import { NAV_LINKS, LEGAL_LINKS } from '../../data/navigation';
 import { COMPANY_NAME, TAGLINE, ADDRESS, CONTACT_EMAIL } from '../../config/contact';
 import { FOOTER_INFO, SOCIAL_LINKS, COMPANY_LINKS } from '../../config/footer';
 import { prefetchChunk } from '../../utils/prefetch';
-import { useLenisInstance } from '../Layout/Layout';
+import { useLenisInstance } from '../../context/LenisContext';
 import './Footer.css';
+
+const COPYRIGHT_YEAR = new Date().getFullYear();
 
 const SOCIAL_ICONS = {
   linkedin: (
@@ -34,7 +36,6 @@ const SOCIAL_ICONS = {
 };
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
   const lenisRef = useLenisInstance();
   const { legalName, phone, businessHours, registrationNumber, gstNumber, workModel } = FOOTER_INFO;
 
@@ -207,7 +208,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="footer-bottom-bar">
           <p className="footer-copyright">
-            &copy; {currentYear} {legalName || COMPANY_NAME}. All rights reserved.
+            &copy; {COPYRIGHT_YEAR} {legalName || COMPANY_NAME}. All rights reserved.
           </p>
           <div className="footer-legal-links">
             {LEGAL_LINKS.map((legal) => (
