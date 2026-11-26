@@ -2,7 +2,7 @@
 
 > **Website:** https://evolvia.vrvora11.workers.dev/  
 > **Verification method:** URL Prefix → HTML Meta Tag  
-> **Status:** ⏳ Awaiting your verification code from Google Search Console
+> **Status:** ✅ Verification tag deployed — ready to verify in Google Search Console
 
 ---
 
