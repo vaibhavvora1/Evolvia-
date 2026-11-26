@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /careers/*/apply
 
-Sitemap: https://evolvia.tech/sitemap.xml
+Sitemap: https://evolvia.vrvora11.workers.dev/sitemap.xml

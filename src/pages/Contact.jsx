@@ -5,6 +5,12 @@ import usePageMeta from '../hooks/usePageMeta';
 import useFormSubmit from '../hooks/useFormSubmit';
 import { CONTACT_EMAIL, ADDRESS, COMPANY_NAME, TAGLINE } from '../config/contact';
 import { contactPerks } from '../data/contactPerks';
+import {
+  buildBreadcrumbSchema,
+  buildCanonicalUrl,
+  buildImageUrl,
+  buildWebPageSchema,
+} from '../config/seo';
 
 const INITIAL_FORM = {
   name: '',
@@ -15,14 +21,25 @@ const INITIAL_FORM = {
 };
 
 export default function Contact() {
-  usePageMeta(
-    `Contact Us — Build with ${COMPANY_NAME}`,
-    `Get in touch with the engineering team at ${COMPANY_NAME} for software development, AI systems, and cloud infrastructure consultation.`,
-    {
-      canonicalUrl: 'https://evolvia.tech/contact',
-      ogImage: 'https://evolvia.tech/asset-01.webp',
-    }
-  );
+  const pageTitle = `Contact ${COMPANY_NAME} Ahmedabad — Start Your Software or AI Project`;
+  const pageDescription = `Contact ${COMPANY_NAME} (Evolvia Infotech) in Maninagar, Ahmedabad, Gujarat for custom software development, React/Node.js engineering, AI automation, and cloud solutions.`;
+
+  usePageMeta(pageTitle, pageDescription, {
+    canonicalUrl: buildCanonicalUrl('/contact'),
+    ogImage: buildImageUrl('/asset-01.webp'),
+    structuredData: [
+      buildWebPageSchema({
+        title: pageTitle,
+        description: pageDescription,
+        path: '/contact',
+        type: 'ContactPage',
+      }),
+      buildBreadcrumbSchema([
+        { label: 'Home', path: '/' },
+        { label: 'Contact' },
+      ]),
+    ],
+  });
 
   const submitForm = useFormSubmit();
   const [formData, setFormData] = useState(INITIAL_FORM);

@@ -5,6 +5,12 @@ import TechLogo from '../components/Technology/TechLogo';
 import TechMarquee from '../components/Technology/TechMarquee';
 import usePageMeta from '../hooks/usePageMeta';
 import technologies from '../data/technologies';
+import {
+  buildBreadcrumbSchema,
+  buildCanonicalUrl,
+  buildImageUrl,
+  buildWebPageSchema,
+} from '../config/seo';
 
 const CATEGORIES = [
   'All',
@@ -20,14 +26,26 @@ export default function Technologies() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
-  usePageMeta(
-    'Core Technology Stack — Evolvia Tech',
-    'Explore the battle-tested technologies, frameworks, and cloud platforms powering Evolvia Tech engineering solutions.',
-    {
-      canonicalUrl: 'https://evolvia.tech/technology',
-      ogImage: 'https://evolvia.tech/asset-21.webp',
-    }
-  );
+  const pageTitle = 'Technology Stack — React, Node.js, Python & AI — Evolvia Tech';
+  const pageDescription =
+    'Explore the production technologies used by Evolvia Tech in Ahmedabad: React, Next.js, Node.js, Python, PostgreSQL, AWS, Docker, and applied AI frameworks.';
+
+  usePageMeta(pageTitle, pageDescription, {
+    canonicalUrl: buildCanonicalUrl('/technology'),
+    ogImage: buildImageUrl('/asset-21.webp'),
+    structuredData: [
+      buildWebPageSchema({
+        title: pageTitle,
+        description: pageDescription,
+        path: '/technology',
+        type: 'CollectionPage',
+      }),
+      buildBreadcrumbSchema([
+        { label: 'Home', path: '/' },
+        { label: 'Technology' },
+      ]),
+    ],
+  });
 
   const filteredTechnologies = useMemo(() => {
     return (technologies || []).filter((tech) => {

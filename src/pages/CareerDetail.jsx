@@ -7,20 +7,42 @@ import Card from '../components/UI/Card';
 import Img from '../components/UI/Img';
 import NotFound from './NotFound';
 import usePageMeta from '../hooks/usePageMeta';
+import {
+  buildBreadcrumbSchema,
+  buildCanonicalUrl,
+  buildImageUrl,
+  buildWebPageSchema,
+} from '../config/seo';
 import './DetailPages.css';
 
 export default function CareerDetail() {
   const { slug } = useParams();
   const job = jobs.find((j) => j.id === slug);
 
-  usePageMeta(
-    job ? `${job.position} — Engineering Careers — Evolvia Tech` : 'Careers — Evolvia Tech',
-    job ? (job.tagline || job.overview?.[0]) : 'Career Opportunity',
-    {
-      canonicalUrl: `https://evolvia.tech/careers/${slug}`,
-      ogImage: job?.image ? `https://evolvia.tech${job.image}` : 'https://evolvia.tech/hero-poster.webp',
-    }
-  );
+  const pageTitle = job ? `${job.position} — Engineering Careers — Evolvia Tech` : 'Page Not Found — Evolvia Tech';
+  const pageDescription = job
+    ? (job.tagline || job.overview?.[0])
+    : 'The requested career opening could not be found.';
+
+  usePageMeta(pageTitle, pageDescription, {
+    canonicalUrl: job ? buildCanonicalUrl(`/careers/${job.id}`) : undefined,
+    ogImage: job?.image ? buildImageUrl(job.image) : undefined,
+    robots: job ? 'index, follow' : 'noindex, nofollow',
+    structuredData: job
+      ? [
+          buildWebPageSchema({
+            title: pageTitle,
+            description: pageDescription,
+            path: `/careers/${job.id}`,
+          }),
+          buildBreadcrumbSchema([
+            { label: 'Home', path: '/' },
+            { label: 'Careers', path: '/careers' },
+            { label: job.position },
+          ]),
+        ]
+      : null,
+  });
 
   if (!job) {
     return <NotFound />;

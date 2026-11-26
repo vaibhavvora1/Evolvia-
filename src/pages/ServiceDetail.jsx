@@ -7,6 +7,12 @@ import DarkBand from '../components/UI/DarkBand';
 import Card from '../components/UI/Card';
 import NotFound from './NotFound';
 import usePageMeta from '../hooks/usePageMeta';
+import {
+  buildBreadcrumbSchema,
+  buildCanonicalUrl,
+  buildImageUrl,
+  buildServiceSchema,
+} from '../config/seo';
 import './DetailPages.css';
 
 export default function ServiceDetail() {
@@ -17,11 +23,24 @@ export default function ServiceDetail() {
   const service = allServicesList.find((s) => s.id === slug);
 
   usePageMeta(
-    service ? `${service.title} — Evolvia Tech` : 'Service Details — Evolvia Tech',
-    service ? (service.tagline || service.overview?.[0] || 'Technical services from Evolvia Tech') : 'Service Details',
+    service ? `${service.title} in Ahmedabad — Evolvia Tech` : 'Page Not Found — Evolvia Tech',
+    service
+      ? (service.tagline || service.overview?.[0] || 'Software and AI engineering services from Evolvia Tech in Ahmedabad.')
+      : 'The requested service page could not be found.',
     {
-      canonicalUrl: `https://evolvia.tech/services/${slug}`,
-      ogImage: service?.image ? `https://evolvia.tech${service.image}` : 'https://evolvia.tech/hero-poster.webp',
+      canonicalUrl: service ? buildCanonicalUrl(`/services/${service.id}`) : undefined,
+      ogImage: service?.image ? buildImageUrl(service.image) : undefined,
+      robots: service ? 'index, follow' : 'noindex, nofollow',
+      structuredData: service
+        ? [
+            buildServiceSchema(service),
+            buildBreadcrumbSchema([
+              { label: 'Home', path: '/' },
+              { label: 'Services', path: '/services' },
+              { label: service.title },
+            ]),
+          ]
+        : null,
     }
   );
 

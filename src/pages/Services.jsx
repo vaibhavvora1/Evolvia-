@@ -5,24 +5,46 @@ import DarkBand from '../components/UI/DarkBand';
 import Card from '../components/UI/Card';
 import usePageMeta from '../hooks/usePageMeta';
 import { services, aiServices } from '../data/services';
+import {
+  buildBreadcrumbSchema,
+  buildCanonicalUrl,
+  buildImageUrl,
+  buildWebPageSchema,
+} from '../config/seo';
 
 export default function Services() {
-  usePageMeta(
-    'Engineering Services — Evolvia Tech',
-    'Comprehensive software engineering, applied AI, mobile development, and cloud DevOps solutions tailored for scaling companies.',
-    {
-      canonicalUrl: 'https://evolvia.tech/services',
-      ogImage: 'https://evolvia.tech/asset-07.webp',
-    }
-  );
+  const pageTitle = 'Software & AI Development Services in Ahmedabad — Evolvia Tech';
+  const pageDescription =
+    'Explore full-stack web development, mobile app development, custom SaaS, AI automation, RAG systems, and cloud DevOps services from Evolvia Tech in Ahmedabad, Gujarat.';
+
+  usePageMeta(pageTitle, pageDescription, {
+    canonicalUrl: buildCanonicalUrl('/services'),
+    ogImage: buildImageUrl('/asset-07.webp'),
+    structuredData: [
+      buildWebPageSchema({
+        title: pageTitle,
+        description: pageDescription,
+        path: '/services',
+        type: 'CollectionPage',
+      }),
+      buildBreadcrumbSchema([
+        { label: 'Home', path: '/' },
+        { label: 'Services' },
+      ]),
+    ],
+  });
 
   return (
     <div className="services-page">
       {/* ── Dark PageHeader Band ── */}
       <PageHeader
+        breadcrumbs={[
+          { label: 'Home', path: '/' },
+          { label: 'Services' },
+        ]}
         tag="ENGINEERING SERVICES"
-        title="Full-Lifecycle Technical Capabilities Built to Scale."
-        subtitle="From architectural conception and prototype validation to production hardening and cloud infrastructure operations — we engineer software that stands the test of growth."
+        title="Full-Lifecycle Software & AI Capabilities Built to Scale."
+        subtitle="From our engineering base in Ahmedabad, Gujarat, we help startups and growing enterprises design, build, and scale custom web, mobile, AI, and cloud systems."
         actions={
           <>
             <Link to="/contact" className="btn btn-primary">

@@ -2,13 +2,14 @@ import React from 'react';
 import PageHeader from '../components/UI/PageHeader';
 import DarkBand from '../components/UI/DarkBand';
 import usePageMeta from '../hooks/usePageMeta';
+import { buildCanonicalUrl } from '../config/seo';
 import './LegalPage.css';
 
 export default function PrivacyPolicy() {
   usePageMeta(
     'Privacy Policy — Evolvia Tech',
     'Review how Evolvia Tech collects, stores, and protects data submitted through our website and services.',
-    { canonicalUrl: 'https://evolvia.tech/privacy-policy' }
+    { canonicalUrl: buildCanonicalUrl('/privacy-policy') }
   );
 
   return (

@@ -7,20 +7,40 @@ import DarkBand from '../components/UI/DarkBand';
 import Card from '../components/UI/Card';
 import NotFound from './NotFound';
 import usePageMeta from '../hooks/usePageMeta';
+import {
+  buildBreadcrumbSchema,
+  buildCanonicalUrl,
+  buildWebPageSchema,
+} from '../config/seo';
 import './DetailPages.css';
 
 export default function TechnologyDetail() {
   const { slug } = useParams();
   const tech = findTechnology(slug || '') || technologies.find((t) => t.slug === slug);
 
-  usePageMeta(
-    tech ? `${tech.name} Stack Architecture — Evolvia Tech` : 'Technology Details — Evolvia Tech',
-    tech ? (tech.description || `Engineering with ${tech.name} at Evolvia Tech`) : 'Technology Details',
-    {
-      canonicalUrl: `https://evolvia.tech/technology/${slug}`,
-      ogImage: 'https://evolvia.tech/hero-poster.webp',
-    }
-  );
+  const pageTitle = tech ? `${tech.name} Engineering — Evolvia Tech` : 'Page Not Found — Evolvia Tech';
+  const pageDescription = tech
+    ? (tech.description || `Engineering with ${tech.name} at Evolvia Tech in Ahmedabad.`)
+    : 'The requested technology page could not be found.';
+
+  usePageMeta(pageTitle, pageDescription, {
+    canonicalUrl: tech ? buildCanonicalUrl(`/technology/${tech.slug}`) : undefined,
+    robots: tech ? 'index, follow' : 'noindex, nofollow',
+    structuredData: tech
+      ? [
+          buildWebPageSchema({
+            title: pageTitle,
+            description: pageDescription,
+            path: `/technology/${tech.slug}`,
+          }),
+          buildBreadcrumbSchema([
+            { label: 'Home', path: '/' },
+            { label: 'Technology', path: '/technology' },
+            { label: tech.name },
+          ]),
+        ]
+      : null,
+  });
 
   if (!tech) {
     return <NotFound />;

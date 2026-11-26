@@ -5,17 +5,35 @@ import DarkBand from '../components/UI/DarkBand';
 import Card from '../components/UI/Card';
 import usePageMeta from '../hooks/usePageMeta';
 import { team } from '../data/team';
+import {
+  buildBreadcrumbSchema,
+  buildCanonicalUrl,
+  buildImageUrl,
+  buildWebPageSchema,
+} from '../config/seo';
 import './Team.css';
 
 export default function Team() {
-  usePageMeta(
-    'Our Team — Engineering & Leadership — Evolvia Tech',
-    'Meet the engineers, architects, and product designers at Evolvia Tech dedicated to building robust software systems.',
-    {
-      canonicalUrl: 'https://evolvia.tech/team',
-      ogImage: 'https://evolvia.tech/asset-19.webp',
-    }
-  );
+  const pageTitle = 'Our Team — Engineering & Leadership — Evolvia Tech Ahmedabad';
+  const pageDescription =
+    'Meet the software engineers, systems architects, and product designers at Evolvia Tech in Ahmedabad, Gujarat.';
+
+  usePageMeta(pageTitle, pageDescription, {
+    canonicalUrl: buildCanonicalUrl('/team'),
+    ogImage: buildImageUrl('/asset-19.webp'),
+    structuredData: [
+      buildWebPageSchema({
+        title: pageTitle,
+        description: pageDescription,
+        path: '/team',
+        type: 'CollectionPage',
+      }),
+      buildBreadcrumbSchema([
+        { label: 'Home', path: '/' },
+        { label: 'Our Team' },
+      ]),
+    ],
+  });
 
   return (
     <div className="team-page">

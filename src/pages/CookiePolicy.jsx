@@ -2,13 +2,14 @@ import React from 'react';
 import PageHeader from '../components/UI/PageHeader';
 import DarkBand from '../components/UI/DarkBand';
 import usePageMeta from '../hooks/usePageMeta';
+import { buildCanonicalUrl } from '../config/seo';
 import './LegalPage.css';
 
 export default function CookiePolicy() {
   usePageMeta(
     'Cookie Policy — Evolvia Tech',
     'Understand how cookies and local browser storage are utilized on the Evolvia Tech website.',
-    { canonicalUrl: 'https://evolvia.tech/cookie-policy' }
+    { canonicalUrl: buildCanonicalUrl('/cookie-policy') }
   );
 
   return (

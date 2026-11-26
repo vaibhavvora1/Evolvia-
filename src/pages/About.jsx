@@ -7,6 +7,12 @@ import usePageMeta from '../hooks/usePageMeta';
 import { team } from '../data/team';
 import { COMPANY_NAME, TAGLINE, ADDRESS } from '../config/contact';
 import { prefetchChunk } from '../utils/prefetch';
+import {
+  buildBreadcrumbSchema,
+  buildCanonicalUrl,
+  buildImageUrl,
+  buildWebPageSchema,
+} from '../config/seo';
 import './About.css';
 
 const PRINCIPLES = [
@@ -28,22 +34,37 @@ const PRINCIPLES = [
 ];
 
 export default function About() {
-  usePageMeta(
-    `About Us — ${COMPANY_NAME}`,
-    `Learn about ${COMPANY_NAME}: our mission, multidisciplinary engineering team, and disciplined approach to software and AI systems.`,
-    {
-      canonicalUrl: 'https://evolvia.tech/about',
-      ogImage: 'https://evolvia.tech/about.webp',
-    }
-  );
+  const pageTitle = `About ${COMPANY_NAME} — IT & AI Software Company in Ahmedabad`;
+  const pageDescription = `Learn about ${COMPANY_NAME} (Evolvia Infotech) in Maninagar, Ahmedabad, Gujarat: our engineering mission, leadership team, and approach to custom software and AI systems.`;
+
+  usePageMeta(pageTitle, pageDescription, {
+    canonicalUrl: buildCanonicalUrl('/about'),
+    ogImage: buildImageUrl('/about.webp'),
+    structuredData: [
+      buildWebPageSchema({
+        title: pageTitle,
+        description: pageDescription,
+        path: '/about',
+        type: 'AboutPage',
+      }),
+      buildBreadcrumbSchema([
+        { label: 'Home', path: '/' },
+        { label: 'About' },
+      ]),
+    ],
+  });
 
   return (
     <div className="about-page">
       {/* ── Dark PageHeader Band ── */}
       <PageHeader
+        breadcrumbs={[
+          { label: 'Home', path: '/' },
+          { label: 'About' },
+        ]}
         tag="WHO WE ARE"
         title="Technology Should Make Complex Systems Feel Simple."
-        subtitle={`At ${COMPANY_NAME}, we bridge ambitious product vision and disciplined technical execution. We engineer digital platforms, intelligent systems, and scalable cloud architectures.`}
+        subtitle={`Based in Maninagar, Ahmedabad, Gujarat, ${COMPANY_NAME} (Evolvia Infotech) bridges ambitious product vision and disciplined technical execution across web, mobile, AI, and cloud engineering.`}
         bannerImage="/about.webp"
         bannerAlt="Evolvia Tech Engineering Studio"
         actions={

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Optional structured XML index for AI discovery tools that parse XML feeds.
+  Note: llms.txt is the more widely proposed plain-text convention; neither llms.txt
+  nor llms.xml is a guaranteed Google Search indexing or ranking mechanism.
+-->
+<llms version="1.0">
+  <organization>
+    <name>Evolvia Tech</name>
+    <legalName>Evolvia Infotech</legalName>
+    <url>https://evolvia.vrvora11.workers.dev/</url>
+    <description>AI-focused software development and IT engineering company in Ahmedabad, Gujarat, India, building custom web, mobile, AI, and cloud platforms.</description>
+    <location>
+      <streetAddress>Maninagar</streetAddress>
+      <city>Ahmedabad</city>
+      <state>Gujarat</state>
+      <country>India</country>
+    </location>
+    <contact>
+      <email>vrvora11@gmail.com</email>
+      <phone>8153875076</phone>
+      <hours>10 AM to 5 PM IST</hours>
+    </contact>
+  </organization>
+  <pages>
+    <page title="Home" url="https://evolvia.vrvora11.workers.dev/" />
+    <page title="About Us" url="https://evolvia.vrvora11.workers.dev/about" />
+    <page title="Engineering Services" url="https://evolvia.vrvora11.workers.dev/services" />
+    <page title="Selected Works" url="https://evolvia.vrvora11.workers.dev/works" />
+    <page title="Technology Stack" url="https://evolvia.vrvora11.workers.dev/technology" />
+    <page title="Our Team" url="https://evolvia.vrvora11.workers.dev/team" />
+    <page title="Careers" url="https://evolvia.vrvora11.workers.dev/careers" />
+    <page title="Contact" url="https://evolvia.vrvora11.workers.dev/contact" />
+    <page title="Blog" url="https://evolvia.vrvora11.workers.dev/blog" />
+  </pages>
+  <services>
+    <service name="Web Development" url="https://evolvia.vrvora11.workers.dev/services/web" />
+    <service name="Mobile App Development" url="https://evolvia.vrvora11.workers.dev/services/mobile" />
+    <service name="AI &amp; Intelligent Systems" url="https://evolvia.vrvora11.workers.dev/services/ai" />
+    <service name="Cloud &amp; DevOps" url="https://evolvia.vrvora11.workers.dev/services/cloud" />
+    <service name="UI/UX &amp; Product Design" url="https://evolvia.vrvora11.workers.dev/services/design" />
+    <service name="Custom Software &amp; SaaS" url="https://evolvia.vrvora11.workers.dev/services/software" />
+    <service name="AI Chatbots &amp; Agents" url="https://evolvia.vrvora11.workers.dev/services/ai-chatbots" />
+    <service name="Document Q&amp;A &amp; RAG" url="https://evolvia.vrvora11.workers.dev/services/document-qa-rag" />
+    <service name="AI Workflow Automation" url="https://evolvia.vrvora11.workers.dev/services/workflow-automation" />
+  </services>
+  <articles>
+    <article title="How AI Is Transforming Modern Software Development" url="https://evolvia.vrvora11.workers.dev/blog/how-ai-is-transforming-modern-software-development" />
+    <article title="Why Businesses in Ahmedabad Are Adopting AI Solutions" url="https://evolvia.vrvora11.workers.dev/blog/why-businesses-in-ahmedabad-are-adopting-ai-solutions" />
+    <article title="AI Automation: A Practical Guide for Startups" url="https://evolvia.vrvora11.workers.dev/blog/ai-automation-practical-guide-for-startups" />
+    <article title="React vs Next.js: Which Is Better for Modern Web Applications?" url="https://evolvia.vrvora11.workers.dev/blog/react-vs-nextjs-modern-web-applications" />
+    <article title="How to Choose the Right Software Development Company in Ahmedabad" url="https://evolvia.vrvora11.workers.dev/blog/how-to-choose-software-development-company-ahmedabad" />
+    <article title="What Is Generative AI and How Can Businesses Use It?" url="https://evolvia.vrvora11.workers.dev/blog/what-is-generative-ai-and-how-businesses-use-it" />
+    <article title="Custom Software vs Ready-Made Software: Which Is Better?" url="https://evolvia.vrvora11.workers.dev/blog/custom-software-vs-ready-made-software" />
+    <article title="The Future of AI-Powered Business Applications" url="https://evolvia.vrvora11.workers.dev/blog/future-of-ai-powered-business-applications" />
+    <article title="How Cloud Computing Helps Businesses Scale" url="https://evolvia.vrvora11.workers.dev/blog/how-cloud-computing-helps-businesses-scale" />
+    <article title="Why Startups Need Scalable Software Architecture" url="https://evolvia.vrvora11.workers.dev/blog/why-startups-need-scalable-software-architecture" />
+  </articles>
+</llms>

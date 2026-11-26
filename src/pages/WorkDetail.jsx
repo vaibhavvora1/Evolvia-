@@ -9,20 +9,42 @@ import Img from '../components/UI/Img';
 import TestimonialCard from '../components/UI/TestimonialCard';
 import NotFound from './NotFound';
 import usePageMeta from '../hooks/usePageMeta';
+import {
+  buildBreadcrumbSchema,
+  buildCanonicalUrl,
+  buildImageUrl,
+  buildWebPageSchema,
+} from '../config/seo';
 import './DetailPages.css';
 
 export default function WorkDetail() {
   const { slug } = useParams();
   const project = projects.find((p) => p.id === slug);
 
-  usePageMeta(
-    project ? `${project.title} — Case Study — Evolvia Tech` : 'Case Study — Evolvia Tech',
-    project ? (project.shortDescription || project.challenge) : 'Project Case Study',
-    {
-      canonicalUrl: `https://evolvia.tech/works/${slug}`,
-      ogImage: project?.image ? `https://evolvia.tech${project.image}` : 'https://evolvia.tech/hero-poster.webp',
-    }
-  );
+  const pageTitle = project ? `${project.title} — Case Study — Evolvia Tech` : 'Page Not Found — Evolvia Tech';
+  const pageDescription = project
+    ? (project.shortDescription || project.challenge)
+    : 'The requested case study could not be found.';
+
+  usePageMeta(pageTitle, pageDescription, {
+    canonicalUrl: project ? buildCanonicalUrl(`/works/${project.id}`) : undefined,
+    ogImage: project?.image ? buildImageUrl(project.image) : undefined,
+    robots: project ? 'index, follow' : 'noindex, nofollow',
+    structuredData: project
+      ? [
+          buildWebPageSchema({
+            title: pageTitle,
+            description: pageDescription,
+            path: `/works/${project.id}`,
+          }),
+          buildBreadcrumbSchema([
+            { label: 'Home', path: '/' },
+            { label: 'Our Works', path: '/works' },
+            { label: project.title },
+          ]),
+        ]
+      : null,
+  });
 
   if (!project) {
     return <NotFound />;

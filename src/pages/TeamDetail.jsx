@@ -8,6 +8,12 @@ import Card from '../components/UI/Card';
 import Img from '../components/UI/Img';
 import NotFound from './NotFound';
 import usePageMeta from '../hooks/usePageMeta';
+import {
+  buildBreadcrumbSchema,
+  buildCanonicalUrl,
+  buildImageUrl,
+  buildPersonSchema,
+} from '../config/seo';
 import './DetailPages.css';
 
 export default function TeamDetail() {
@@ -15,11 +21,22 @@ export default function TeamDetail() {
   const member = team.find((m) => m.id === slug);
 
   usePageMeta(
-    member ? `${member.name} — ${member.role} — Evolvia Tech` : 'Team Member — Evolvia Tech',
-    member ? (member.bio || member.tagline) : 'Team Member Profile',
+    member ? `${member.name} — ${member.role} — Evolvia Tech` : 'Page Not Found — Evolvia Tech',
+    member ? (member.bio || member.tagline) : 'The requested team profile could not be found.',
     {
-      canonicalUrl: `https://evolvia.tech/team/${slug}`,
-      ogImage: member?.image ? `https://evolvia.tech${member.image}` : 'https://evolvia.tech/hero-poster.webp',
+      canonicalUrl: member ? buildCanonicalUrl(`/team/${member.id}`) : undefined,
+      ogImage: member?.image ? buildImageUrl(member.image) : undefined,
+      robots: member ? 'index, follow' : 'noindex, nofollow',
+      structuredData: member
+        ? [
+            buildPersonSchema(member),
+            buildBreadcrumbSchema([
+              { label: 'Home', path: '/' },
+              { label: 'Team', path: '/team' },
+              { label: member.name },
+            ]),
+          ]
+        : null,
     }
   );
 

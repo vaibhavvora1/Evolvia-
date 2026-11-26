@@ -9,6 +9,7 @@ import { CONTACT_EMAIL } from '../config/contact';
 import { isCloudinaryConfigured } from '../config/cloudinary';
 import { uploadResume } from '../utils/uploadResume';
 import NotFound from './NotFound';
+import { buildCanonicalUrl } from '../config/seo';
 import './ApplyForm.css';
 
 const EXPERIENCE_OPTIONS = [
@@ -48,11 +49,11 @@ export default function ApplyForm() {
   const job = jobs.find((j) => j.id === slug);
 
   usePageMeta(
-    job ? `Apply for ${job.position} — Evolvia Tech Careers` : 'Job Application — Evolvia Tech',
+    job ? `Apply for ${job.position} — Evolvia Tech Careers` : 'Page Not Found — Evolvia Tech',
     job ? `Submit your application for the ${job.position} position at Evolvia Tech.` : 'Job Application',
     {
-      canonicalUrl: `https://evolvia.tech/careers/${slug}/apply`,
-      ogImage: 'https://evolvia.tech/hero-poster.webp',
+      canonicalUrl: job ? buildCanonicalUrl(`/careers/${job.id}/apply`) : undefined,
+      robots: 'noindex, follow',
     }
   );
 

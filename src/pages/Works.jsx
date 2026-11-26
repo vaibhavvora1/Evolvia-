@@ -9,16 +9,34 @@ import useGsapReveal from '../hooks/useGsapReveal';
 import useSectionReveal from '../hooks/useSectionReveal';
 import { projects } from '../data/projects';
 import testimonials from '../data/testimonials';
+import {
+  buildBreadcrumbSchema,
+  buildCanonicalUrl,
+  buildImageUrl,
+  buildWebPageSchema,
+} from '../config/seo';
 
 export default function Works() {
-  usePageMeta(
-    'Our Works & Case Studies — Evolvia Tech',
-    'Explore production case studies, system architectures, and engineering outcomes delivered by Evolvia Tech.',
-    {
-      canonicalUrl: 'https://evolvia.tech/works',
-      ogImage: 'https://evolvia.tech/asset-22.webp',
-    }
-  );
+  const pageTitle = 'Our Works & Case Studies — Evolvia Tech Ahmedabad';
+  const pageDescription =
+    'Explore software engineering case studies, AI platforms, FinTech systems, and cloud architectures delivered by Evolvia Tech.';
+
+  usePageMeta(pageTitle, pageDescription, {
+    canonicalUrl: buildCanonicalUrl('/works'),
+    ogImage: buildImageUrl('/asset-22.webp'),
+    structuredData: [
+      buildWebPageSchema({
+        title: pageTitle,
+        description: pageDescription,
+        path: '/works',
+        type: 'CollectionPage',
+      }),
+      buildBreadcrumbSchema([
+        { label: 'Home', path: '/' },
+        { label: 'Our Works' },
+      ]),
+    ],
+  });
 
   // Section reveal refs
   const caseHeadRef = useSectionReveal();

@@ -5,16 +5,34 @@ import Card from '../components/UI/Card';
 import usePageMeta from '../hooks/usePageMeta';
 import { jobs, benefits } from '../data/careers';
 import { CONTACT_EMAIL } from '../config/contact';
+import {
+  buildBreadcrumbSchema,
+  buildCanonicalUrl,
+  buildImageUrl,
+  buildWebPageSchema,
+} from '../config/seo';
 
 export default function Careers() {
-  usePageMeta(
-    'Careers — Engineering Opportunities — Evolvia Tech',
-    'Join our remote-first engineering team building dependable software, intelligent systems, and scalable cloud infrastructure.',
-    {
-      canonicalUrl: 'https://evolvia.tech/careers',
-      ogImage: 'https://evolvia.tech/asset-04.webp',
-    }
-  );
+  const pageTitle = 'Careers — Software & AI Engineering Jobs — Evolvia Tech Ahmedabad';
+  const pageDescription =
+    'Explore software engineering, React, Node.js, and AI development career opportunities at Evolvia Tech in Ahmedabad (remote-first).';
+
+  usePageMeta(pageTitle, pageDescription, {
+    canonicalUrl: buildCanonicalUrl('/careers'),
+    ogImage: buildImageUrl('/asset-04.webp'),
+    structuredData: [
+      buildWebPageSchema({
+        title: pageTitle,
+        description: pageDescription,
+        path: '/careers',
+        type: 'CollectionPage',
+      }),
+      buildBreadcrumbSchema([
+        { label: 'Home', path: '/' },
+        { label: 'Careers' },
+      ]),
+    ],
+  });
 
   return (
     <div className="careers-page">

@@ -1,0 +1,50 @@
+# Evolvia Tech (Evolvia Infotech)
+
+> AI-focused software development and IT engineering studio based in Maninagar, Ahmedabad, Gujarat, India. We design and build custom web applications, mobile apps, applied AI systems, and scalable cloud infrastructure.
+
+## Company Overview
+- **Brand Name:** Evolvia Tech
+- **Legal Entity:** Evolvia Infotech
+- **Website:** https://evolvia.vrvora11.workers.dev/
+- **Location:** Maninagar, Ahmedabad, Gujarat, India
+- **Email:** vrvora11@gmail.com
+- **Phone:** 8153875076
+- **Business Hours:** 10 AM to 5 PM IST
+- **Work Model:** Remote-first engineering team
+
+## Core Services
+- [Engineering Services Overview](https://evolvia.vrvora11.workers.dev/services): Full-lifecycle software, AI, and cloud capabilities.
+- [Web Development](https://evolvia.vrvora11.workers.dev/services/web): Fast, search-friendly React and Next.js applications with Node.js/Go APIs.
+- [Mobile App Development](https://evolvia.vrvora11.workers.dev/services/mobile): Cross-platform and native iOS/Android apps with React Native, Flutter, Swift, and Kotlin.
+- [AI & Intelligent Systems](https://evolvia.vrvora11.workers.dev/services/ai): Custom LLM workflows, retrieval-augmented generation (RAG), and AI integration.
+- [Cloud & DevOps](https://evolvia.vrvora11.workers.dev/services/cloud): Scalable AWS/GCP architecture, Docker, Kubernetes, and Terraform CI/CD.
+- [UI/UX & Product Design](https://evolvia.vrvora11.workers.dev/services/design): Design systems, Figma prototyping, and accessible product interfaces.
+- [Custom Software & SaaS](https://evolvia.vrvora11.workers.dev/services/software): Tailored multi-tenant SaaS platforms and enterprise software.
+- [AI Chatbots & Agents](https://evolvia.vrvora11.workers.dev/services/ai-chatbots): Grounded conversational assistants for customer and internal support.
+- [Document Q&A & RAG](https://evolvia.vrvora11.workers.dev/services/document-qa-rag): Auditable enterprise knowledge search over internal documents.
+- [AI Workflow Automation](https://evolvia.vrvora11.workers.dev/services/workflow-automation): Automated document extraction, triage, and operational pipelines.
+
+## Technology Stack
+React, Next.js, TypeScript, Node.js, Python, FastAPI, Go, PostgreSQL, MongoDB, Redis, GraphQL, React Native, Flutter, AWS, Google Cloud, Docker, Kubernetes, Terraform, OpenAI, LangChain.
+
+## Key Pages
+- [Home](https://evolvia.vrvora11.workers.dev/)
+- [About Evolvia Tech](https://evolvia.vrvora11.workers.dev/about)
+- [Selected Works & Case Studies](https://evolvia.vrvora11.workers.dev/works)
+- [Technology Directory](https://evolvia.vrvora11.workers.dev/technology)
+- [Engineering Team](https://evolvia.vrvora11.workers.dev/team)
+- [Careers](https://evolvia.vrvora11.workers.dev/careers)
+- [Contact](https://evolvia.vrvora11.workers.dev/contact)
+- [Engineering Blog](https://evolvia.vrvora11.workers.dev/blog)
+
+## Published Blog Articles
+- [How AI Is Transforming Modern Software Development](https://evolvia.vrvora11.workers.dev/blog/how-ai-is-transforming-modern-software-development)
+- [Why Businesses in Ahmedabad Are Adopting AI Solutions](https://evolvia.vrvora11.workers.dev/blog/why-businesses-in-ahmedabad-are-adopting-ai-solutions)
+- [AI Automation: A Practical Guide for Startups](https://evolvia.vrvora11.workers.dev/blog/ai-automation-practical-guide-for-startups)
+- [React vs Next.js: Which Is Better for Modern Web Applications?](https://evolvia.vrvora11.workers.dev/blog/react-vs-nextjs-modern-web-applications)
+- [How to Choose the Right Software Development Company in Ahmedabad](https://evolvia.vrvora11.workers.dev/blog/how-to-choose-software-development-company-ahmedabad)
+- [What Is Generative AI and How Can Businesses Use It?](https://evolvia.vrvora11.workers.dev/blog/what-is-generative-ai-and-how-businesses-use-it)
+- [Custom Software vs Ready-Made Software: Which Is Better?](https://evolvia.vrvora11.workers.dev/blog/custom-software-vs-ready-made-software)
+- [The Future of AI-Powered Business Applications](https://evolvia.vrvora11.workers.dev/blog/future-of-ai-powered-business-applications)
+- [How Cloud Computing Helps Businesses Scale](https://evolvia.vrvora11.workers.dev/blog/how-cloud-computing-helps-businesses-scale)
+- [Why Startups Need Scalable Software Architecture](https://evolvia.vrvora11.workers.dev/blog/why-startups-need-scalable-software-architecture)

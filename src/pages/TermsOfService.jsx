@@ -2,13 +2,14 @@ import React from 'react';
 import PageHeader from '../components/UI/PageHeader';
 import DarkBand from '../components/UI/DarkBand';
 import usePageMeta from '../hooks/usePageMeta';
+import { buildCanonicalUrl } from '../config/seo';
 import './LegalPage.css';
 
 export default function TermsOfService() {
   usePageMeta(
     'Terms of Service — Evolvia Tech',
     'Terms governing use of the Evolvia Tech website and intellectual property.',
-    { canonicalUrl: 'https://evolvia.tech/terms-of-service' }
+    { canonicalUrl: buildCanonicalUrl('/terms-of-service') }
   );
 
   return (
